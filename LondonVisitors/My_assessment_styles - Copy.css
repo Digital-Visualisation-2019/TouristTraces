@@ -1,0 +1,118 @@
+/* adapted from Duncan Smith Digital Visualisation Lecture Week 2 Example 9, 2019 */
+
+<style>
+    body { margin:0; padding:0; }
+     #map { position:absolute; top:0; bottom:0; width:100%; }
+
+.map-overlay {
+    font: 11px/22px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    position: absolute;
+    width: 380px;
+    min-width: 380px;
+    top: 0;
+    left: 0;
+    padding: 10px;
+}
+
+.map-overlay .map-overlay-inner {
+    background-color: #fff;
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.map-overlay table {
+    border: none;
+    width: 100%;
+}
+
+.map-overlay h2 {
+    line-height: 24px;
+    display: block;
+    margin: 0 0 10px;
+}
+
+.map-overlay label {
+    font: 14px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    display: block;
+    vertical-align: middle;
+    margin: 0 0 0 10px;
+    padding: 0;
+}
+
+.map-overlay .legend .bar {
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(to right, #FCA107, #7F3121);
+}
+
+.map-overlay input {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    min-width: 220px;
+    position: relative;
+    margin: 6px 0 0 0;
+    cursor: ew-resize;
+}
+
+.map-overlay p.credit {
+   margin: 0;
+   padding: 0;
+}
+
+.mapboxgl-popup {
+   max-width: 400px;
+   min-width: 50px;
+   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+   padding: 0;
+   margin: 0,0,0,10px;
+}
+
+.mapboxgl-popup-tip-container {
+    width:0px;
+    height:0px;
+    margin:0 auto;
+    position:relative;
+  }
+
+.mapboxgl-popup-tip {
+    width:0;
+    height:0;
+    margin:0;
+    border-left:0 solid transparent;
+    border-right:0 solid transparent;
+    border-top:0 solid transparent;
+    box-shadow:none;
+}
+
+/* adapted from https://docs.mapbox.com/help/tutorials/show-changes-over-time/#create-a-legend*/
+
+.row {
+  height: 12px;
+  width: 100%;
+}
+
+.colors {
+  background: linear-gradient(to right, hsl(203, 88%, 65%), hsl(0, 77%, 41%));
+  margin-bottom: 0px;
+}
+
+.label {
+  width: 15%;
+  display: inline-block;
+  text-align: center;
+}
+
+.playbuttonstyle {
+  color: whitesmoke;
+  background-color: darkslategrey;
+}
+
+.pausebuttonstyle {
+  color: darkslategrey;
+  background-color: whitesmoke;
+}
+
+</style>
