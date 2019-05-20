@@ -1,0 +1,481 @@
+<!--
+
+ADAPTED SOURCES: 
+
+Smith, D., 2019, CASA, Digital Visualisation Lecture Week 2 - Example 9
+
+DATA
+O'Brien, O., 2018, https://github.com/oobrien/vis/tree/master/tube/data, last accessed 6 February 2019
+OpenWeatherMap, 2019,  https://openweathermap.org/api, last API call 17 March 2019
+Transport for London (TfL), 2019, London Underground Average Monthly Temperatures since 2013, provided by London Datastore, https://data.london.gov.uk/dataset/london-underground-average-monthly-temperatures, released January 2019, last accessed 24 February 2019
+
+
+API and JSON retrieval with AJAX/JQUERY:
+https://idratherbewriting.com/learnapidoc/docapis_json_console.html
+https://idratherbewriting.com/learnapidoc/docapis_access_json_values.html
+https://developers.google.com/speed/libraries/
+https://en.m.wikipedia.org/wiki/Ajax_(programming)
+http://jquery.com/
+https://stackoverflow.com/questions/7286532/jquery-mouseenter-vs-mouseover
+
+MapboxGLJS Tutorials and Documentation:
+https://docs.mapbox.com/mapbox-gl-js/api/
+https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-get
+https://docs.mapbox.com/mapbox-gl-js/style-spec/#layers-line
+https://docs.mapbox.com/mapbox-gl-js/example/data-driven-lines/
+https://docs.mapbox.com/mapbox-gl-js/example/timeline-animation/
+https://docs.mapbox.com/mapbox-gl-js/example/popup-on-hover/ 
+https://docs.mapbox.com/mapbox-gl-js/example/hover-styles/
+https://docs.mapbox.com/mapbox-gl-js/example/polygon-popup-on-click/
+https://docs.mapbox.com/help/tutorials/show-changes-over-time/ 
+
+
+JQUERY ANIMATION
+https://jsfiddle.net/w3cwhh1w/  //for play pause buttons
+
+https://www.w3schools.com/jsref/met_element_setattribute.asp 
+
+OTHER INSPIRATION/REFS
+https://github.com/london-rhythms/london-rhythms.github.io/blob/master/tfl/tubedata.js
+https://stackoverflow.com/questions/37880443/parse-to-float-with-2-decimal-places
+-->
+
+
+
+
+<!--
+
+PLEASE NOTE:
+
+IT IS RECOMMENDED THIS WEBPAGE IS USED WITH CHROME AS NO OTHER BROWSERS HAVE BEEN TESTED
+
+-->
+
+
+
+
+
+
+
+
+<!--
+
+EDITING STARTS HERE FOR GROUP WORK
+
+-->
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Tourist Traces - International Visitors to London </title>  
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <meta name="description" content="Tourist Traces - International Visitors to London 2011-2018"> <!--extra metadata for accessibility on the web-->
+    <meta name="author" content="UCL CASA student"> <!--for the purpose of annonymous marking no name here-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> <!--ajax google api is used so that jquery library can be accessed for easy API retrieval and animation event handling-->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script> 
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' /><!--used so that mapbox gl js library and stylesheets can be accessed-->
+    <link href='My_assessment_styles.css' rel='stylesheet' />   <!--Style sheet is linked externally here  -->
+    
+<!--
+    <script>
+        var settings = {
+           "async": true,
+           "crossDomain": true,
+           "url": "https://api.openweathermap.org/data/2.5/weather?id=2643743&units=metric&appid=11a4264d99eb29d17715676e218d7a29", 
+           "method": "GET"
+        }
+        // ensure request is for metric, the default for openweathermap is Kelvin
+       
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            
+            var currentTemperature = response.main.temp;
+            $("#currentTemp").append(currentTemperature);   
+            // this is already returned as 2dp
+        
+            var tubeWarmer = parseFloat(21.61 - currentTemperature).toFixed(2)
+            $("#tubeWarmerTemp").text(tubeWarmer);
+            
+            }).fail(function(response) {
+	           console.log('Error: ' + response);  // error capture
+        });
+        
+        
+        // tubeWarmer is hard coded for average of all submerged lines in March - ideally should have a function to get monthly data checked against today's date, and then call it but no long term mean monthly dataset was fully processed for parsing 
+        
+        // parseFloat used (see https://stackoverflow.com/questions/37880443/parse-to-float-with-2-decimal-places)  otherwise you can get a 'number' with many decimal places returned as a result of a rounding error!
+        
+      </script>
+-->
+    
+</head>
+
+<body>
+
+<div id='map'></div>
+
+<div class='map-overlay top'>
+    <div class='map-overlay-inner'>
+        <h1>International Visitors to London</h1>
+        <h3>Travelling by Air 2011-2018 <h3>
+        <p>Visitor Numbers and Spend </p>
+        <div class='row colors'>
+        </div>
+        <div class='row labels'>
+            <div class='label'>£0.1 million</div>
+            <div class='label'></div>
+            <div class='label'></div>
+            <div class='label'></div>
+            <div class='label'></div>
+            <div class='label'>£500 million</div>
+        </div>
+        <p><br /></p>
+        <table><tr><td> 
+        <input id='slider' type='range' class= 'range-slider' min='0' max='31' step='1' value='0' list='tickmarks' />
+            <!--31 allows it to loop over but still got this odd end thing-->
+        <datalist id="tickmarks">
+            <option value="0" label="2011 Q1"> 
+            <option value="1">
+            <option value="2">
+            <option value="3">
+            <option value="4" label="2012 Q1">
+            <option value="5">
+            <option value="6">
+            <option value="7">
+            <option value="8" label="2013 Q1">
+            </datalist>
+            </td>
+            <td>
+            <label id='yearquarter'>2011Q1</label>  
+                <!--this might need to be the exact name as in the field name messy SumVisits2011Q1 or SumSpend2011Q1  not 2011 Q1-->
+    </td>
+    </tr></table>
+        <button id="play">
+        Start
+        </button>
+        <button id="pause">
+        Pause
+        </button>
+            
+<!--
+        <p><br /></p>
+        <p id="currentTemp">Current Outside Temperature (°C): </p>
+        <p id="tubeWarmer"> Today the deep tube is estimated to be warmer by <span id="tubeWarmerTemp"></span> °C </p> 
+-->
+        <p></p>
+        <p class="credit">CREDITS:<br>Visitor data: <a href="https://www.visitbritain.org/latest-quarterly-data-area">VisitBritain</a>.<br /> Geocoding: <a href="https://developers.google.com/maps/documentation/geocoding/intro">Google Geocoding API</a>. <br /> <br /> <br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /> </p>
+        
+</div>
+</div>
+</div>
+    
+    
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoicGlwcGF3b29kIiwiYSI6ImNqbjRmYnloYzBwajczcXJ1OW13YmJzdHQifQ.3n5ekTfgcT7HKsEu0cYqSA'; // Mapbox Public Access token here
+
+    // Load a new map in the 'map' HTML div
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/dark-v9',    // set theme - this is a standard style as there are no other reference layers 
+                                                    // so custom style was not needed here for the purpose of a background map. 
+                                                    // style: 'mapbox://styles/pippawood/cjvkxb1yv2lma1cp19hdqgb3a' sample for 2018q3    
+        center: [-42.491, 29.925], // starting position [lng, lat]
+        zoom: 1.2 // starting zoom
+    });
+    
+    
+// Create an array of the available data yearquarter
+var yearquarters = [
+
+'2011Q1',
+'2011Q2',
+'2011Q3',
+'2011Q4',
+'2012Q1',
+'2012Q2',
+'2012Q3',
+'2012Q4',
+'2013Q1',
+'2013Q2',
+'2013Q3',
+'2013Q4',
+'2014Q1',
+'2014Q2',
+'2014Q3',
+'2014Q4',
+'2015Q1',
+'2015Q2',
+'2015Q3',
+'2015Q4',
+'2016Q1',
+'2016Q2',
+'2016Q3',
+'2016Q4',
+'2017Q1',
+'2017Q2',
+'2017Q3',
+'2017Q4',
+'2018Q1',
+'2018Q2',
+'2018Q3'    
+
+// now got the quarter year and need to add SumVisits SumSpend
+    
+//'SumVisits2011Q1',
+//'SumVisits2011Q2',
+//'SumVisits2011Q3',
+//'SumVisits2011Q4',
+//'SumVisits2012Q1',
+//'SumVisits2012Q2',
+//'SumVisits2012Q3',
+//'SumVisits2012Q4',
+//'SumVisits2013Q1',
+//'SumVisits2013Q2',
+//'SumVisits2013Q3',
+//'SumVisits2013Q4',
+//'SumVisits2014Q1',
+//'SumVisits2014Q2',
+//'SumVisits2014Q3',
+//'SumVisits2014Q4',
+//'SumVisits2015Q1',
+//'SumVisits2015Q2',
+//'SumVisits2015Q3',
+//'SumVisits2015Q4',
+//'SumVisits2016Q1',
+//'SumVisits2016Q2',
+//'SumVisits2016Q3',
+//'SumVisits2016Q4',
+//'SumVisits2017Q1',
+//'SumVisits2017Q2',
+//'SumVisits2017Q3',
+//'SumVisits2017Q4',
+//'SumVisits2018Q1',
+//'SumVisits2018Q2',
+//'SumVisits2018Q3'    
+//    
+
+];
+
+    
+            
+    
+    map.on('load', function() {
+
+
+            // This is the main function that runs when the user changes the data yearquarter value
+            function setYear(yearquarter) {
+                // Set the label to the correct yearquarter
+                document.getElementById('yearquarter').textContent = yearquarters[yearquarter];
+        
+                
+                var pp = map.getPaintProperty('QuarterYearTotalssince2011Air','circle-radius');
+                
+                        // Use a get expression (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-get)
+                        // and then set the line-color to a feature property value.
+                
+                
+                console.log(yearquarters[yearquarter]); // check grabbing the correct yearquarter
+                pp[2][1] = "SumVisits" + yearquarters[yearquarter]; 
+                                                    // needs to access the nested array yearquarter 
+                                                    // as it is an interpolated point feauture different structure to the point example 
+                
+                console.log(pp[2][1]); 
+                
+                console.log(pp);
+                
+                
+                
+                var pp2 = map.getPaintProperty('QuarterYearTotalssince2011Air','circle-color');
+                
+                        // Use a get expression (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-get)
+                        // and then set the line-color to a feature property value.
+                
+                
+                console.log(yearquarters[yearquarter]); // check grabbing the correct yearquarter
+                pp2[2][1] = "SumSpend" + yearquarters[yearquarter]; 
+                                                    // needs to access the nested array yearquarter 
+                                                    // as it is an interpolated point feauture different structure to the point example 
+                
+                console.log(pp2[2][1]); 
+                
+                console.log(pp2);
+                
+                map.setPaintProperty('QuarterYearTotalssince2011Air','circle-radius', pp); 
+                map.setPaintProperty('QuarterYearTotalssince2011Air','circle-color', pp2);
+
+                console.log(map.getPaintProperty('QuarterYearTotalssince2011Air','circle-radius')); //checks circle-radius property retrieved
+                console.log(map.getPaintProperty('QuarterYearTotalssince2011Air','circle-color'));
+
+                map.setLayoutProperty('QuarterYearTotalssince2011Air', 'visibility', 'none');
+                map.setLayoutProperty('QuarterYearTotalssince2011Air', 'visibility', 'visible');
+
+            }
+
+       
+        
+          // Add the circles layer to the map
+            map.addLayer({
+                    id: 'QuarterYearTotalssince2011Air', //name of tileset without code
+                    type: 'circle',
+                    source: {
+                      type: 'vector',
+                      url: 'mapbox://pippawood.1j82q05g' // Mapbox tileset Map ID
+                    },
+                    'source-layer': 'QuarterYearTotalssince2011Air-9try0u', // name of tilesets
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'circle-opacity': 0.80,
+                        'circle-radius': 
+                        [
+                          "interpolate",
+                          ["linear"],
+                          ["get", "SumVisits2011Q1"],
+                          0.401,
+                          3,
+                          732.152,
+                          25
+                        ],
+                        
+                        // set the circle-radius as feature property value with max range.
+                        // set the circle-color as feature property value.
+                        
+                        'circle-color': 
+                        [
+                          "interpolate",
+                          ["linear"],
+                          ["get", "SumVisits2011Q1"], //["get", "SumSpend2011Q1"],
+                          0.089,
+                          "hsl(196, 64%, 46%)",
+                          255,
+                          "hsl(280, 50%, 41%)",  
+                          500,
+                          "hsl(360, 78%, 41%)",
+                          621,
+                          "hsl(0, 68%, 35%)"  //USA is so high need an extra intensity of red so not to affect the whole scale   NEEDS a 255 step? play with it
+                        
+                        ]
+                         
+                    }
+            });
+
+          console.log(map.getPaintProperty('QuarterYearTotalssince2011Air','circle-color'));
+        
+        
+            // Assign an event listner to the slider so that the setYear function runs when the user changes the slider    
+        
+            document.getElementById('slider').addEventListener('input', function(e) {
+                var yearquarter = parseInt(e.target.value); 
+                setYear(yearquarter);
+                });
+ 
+         
+        
+        // Another event listener that adds the popup when the user puts their cursor over the lines
+        // https://stackoverflow.com/questions/7286532/jquery-mouseenter-vs-mouseover 
+ 
+            var CirclePopup = new mapboxgl.Popup({
+                    offset:[50,50],
+                    closeButton: false,
+                    closeOnClick: true
+            });
+      
+      
+
+        
+        // When a hover event occurs on a feature in the tube lines layer, it open a popup anywhere 
+        // along the line with line name HTML from its properties. Click away to close the popup. 
+        
+        // N.B. You have to use built in lngLat for this NOT coordinates or geometry as it is a feauture and not a point. 
+        // .setLngLat(e.features[0].geometry.coordinates) will NOT work here
+        // see  https://docs.mapbox.com/mapbox-gl-js/example/polygon-popup-on-click/ 
+        // we are not using a specific coordinate point data - this is for feautures - works on line or polygon etc
+        
+        map.on('mouseover', 'QuarterYearTotalssince2011Air', function (e) {
+           CirclePopup
+                .setLngLat(e.lngLat)
+                .setHTML(e.features[0].properties.Country)
+                .addTo(map);
+        });
+
+        // Change the cursor to a pointer when the mouse is over the states layer.
+        map.on('mouseenter', 'QuarterYearTotalssince2011Air', function () {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'QuarterYearTotalssince2011Air', function () {
+            map.getCanvas().style.cursor = '';
+        });        
+         
+     
+        
+        
+        // play and pause animation for the timeslider using JQUERY - see // https://jsfiddle.net/w3cwhh1w/
+        
+     
+      
+        var interval;
+        function goforward () {  
+            //('#forward').click not needed as function is not being triggered from a forward button - might be needed in the future
+
+            var index = $('.range-slider').val(); 
+                index++;
+                index = index > 31 ? 0 : index;
+                $('.range-slider').val(index); 
+
+//             console.log("XX"); // temporary testing
+             console.log(index);  
+            // test the function is working and index is retrieved
+
+             $("#yearquarter").html(yearquarters[index]);   
+             setYear(index); // no map.function because map retieval is within setYear
+
+        }
+
+
+
+        $('#play').click(function(){
+           if(interval)
+           {clearInterval(interval);
+           }
+            // stops any active timers before starting a new one
+           interval=setInterval(function (){
+           goforward();
+            var play = document.getElementById("play");
+            play.setAttribute("class", "playbuttonstyle");   
+                // play button colour  is set
+                // do not use "style" inline as it can be overwrittent by CSS use "class" and relate to CSS
+                // tips: https://www.w3schools.com/jsref/met_element_setattribute.asp 
+      
+            var pause = document.getElementById("pause");
+            pause.setAttribute("class", "pausebuttonstyle");
+            // pause button colour is set
+            // set rate of speed of slider
+          },1000);
+        });
+
+        $("#pause").click(function(){
+           // pause button colour set (opposite colour change)
+            var pause = document.getElementById("pause");
+            pause.setAttribute("class", "playbuttonstyle"); 
+            // play button colour set (opposite colour change)
+            var play = document.getElementById("play");
+            play.setAttribute("class", "pausebuttonstyle"); 
+
+                clearInterval(interval);
+        });    
+
+ });    
+               
+        
+
+    
+</script>
+</body>
+</html>
