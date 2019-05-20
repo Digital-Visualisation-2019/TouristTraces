@@ -1,0 +1,70 @@
+//Hello World
+// inspirational sources: https://github.com/london-rhythms/london-rhythms.github.io/blob/master/index.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!--META & TITLE-->
+    <meta charset="utf-8">
+    <meta name="author" content="Group5">
+    <meta name='date' content='May. 20, 2019'>
+    <title>Tourist Traces - Invisible Cities</title>
+  
+  <script>
+        //fullPage settings
+        $(function() {
+            $('#myPage').fullpage({
+                sectionsColor: ['#353535', '#353535', '#353535', '#353535', '#353535', '#353535'], // page background
+                anchors: ['page1', 'page2', 'page3', 'page4', 'page5', 'page6'],
+                menu: '#menu',
+            });
+        });
+    </script>
+</head>
+
+<body>
+   <div class="prjtitle">Tourist Traces</div>
+            <div class="prjintro"></div>
+            <img src="media/arrows_down.png" alt="Scroll down" class="downarrow" title="Scroll down to explore!">
+        </div>
+  
+  <!--NAVIGATION TABS-->
+    <!--free icons from: https://www.flaticon.com-->
+    <ul id="menu">
+        <li data-menuanchor="page1" class="active"><a href="#page1" title="Top"><img src="media/icon_1.png"></a></li>
+        <li data-menuanchor="page2"><a href="#page2" title="Site Map"><img src="media/icon_2.png"></a></li>
+        <li data-menuanchor="page3"><a href="#page3" title="TFL"><img src="media/icon_3.png"></a></li>
+        <li data-menuanchor="page4"><a href="#page4" title="Yelp"><img src="media/icon_4.png"></a></li>
+        <li data-menuanchor="page5"><a href="#page5" title="Footfall"><img src="media/icon_5.png"></a></li>
+        <li data-menuanchor="page6"><a href="#page6" title="Twitter"><img src="media/icon_6.png"></a></li>
+        <li onclick="on()"><img src="media/icon_7.png" title="About"></li>
+    </ul>
+
+
+    <!-- PAGES -->
+    <div id="myPage">
+      
+       <!-- Page3: London - Visitors -->
+        <div class="section section3">
+
+            <!--TITLE-->
+            <div class="overlay">
+                <h3>International Visitors to London, 2011-2018</h3>
+                <p>Data source: <a href="" </a></p>
+             </div>
+ 
+
+
+            <!--MAP-->
+            <iframe id="LondonVisitors" src="LondonVisitors/TouristTracesIntVisitor2.html" height="100%" width="100%" frameBorder="0" scrolling="no"></iframe>
+        </div>
+      
+      
+    </div>
+</script>
+
+</body>
+
+</html>
