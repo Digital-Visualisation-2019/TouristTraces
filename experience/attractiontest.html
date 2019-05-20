@@ -1,0 +1,1130 @@
+<html>
+<head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.1.2/mapbox-gl-geocoder.min.js'></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.1.2/mapbox-gl-geocoder.css' type='text/css' />
+ <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+ <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+ <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+<style>
+  body {
+  background: #404040;
+  color: #f8f8f8;
+  font: 500 20px/26px 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The page is split between map and sidebar - the sidebar gets 1/3, map
+gets 2/3 of the page. You can adjust this to your personal liking. */
+.map-overlay{
+  position: absolute;
+  height: 200px;
+  width: 50%;
+  top: 100px;
+}
+.map-overlay2{
+  position: absolute;
+  height: 200px;
+  width: 50%;
+  top: 100px;
+}
+.mapboxgl-popup-content h3{
+  background: #91c949;
+  color: #fff;
+  margin: 0;
+  display: block;
+  padding-top: 8px;
+  border-radius: 3px 3px 0 0;
+  padding-bottom: 8px;
+  font-weight: 700;
+  padding-left: 10px;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
+  margin-bottom: -15px;
+  padding-right: 10px;
+}
+.mapboxgl-popup-content h3:hover{
+  color: #d1e0e0;
+}
+.mapboxgl-popup-content h4{
+  margin: 0;
+  display: block;
+  color: darkgray;
+  font-weight: 600;
+  padding-top: 20px;
+  padding-left: 10px;
+}
+.mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+.map {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+
+.pad2 {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.navbar-header{
+  position: absolute;
+  color:darkgray;
+  padding-left: 15px;
+  padding-top: 25px;
+  font-size: 30px;
+  text-decoration: none;
+
+
+}
+@media (min-width:768px) {
+    .navbar-header {
+        float: left
+    }
+}
+.navibar{
+    position:absolute;
+    width: 100%;
+    height: 10%;
+    top: 0;
+    left: 0;
+    background: #f0f5f5;  
+    opacity: .9
+     }
+.navibar: hover{
+  text-decoration: none;
+}
+
+
+#menu {
+        background: #fff;
+        position: absolute;
+        z-index: 1;
+        top: 70px;
+        right: 10px;
+        border-radius: 3px;
+        width: 120px;
+        border: 1px solid rgba(0,0,0,0.4);
+        font-family: 'Open Sans', sans-serif;
+        opacity: 0.9;
+
+    }
+
+    #menu a {
+        font-size: 18px;
+        color: #404040;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0,0,0,0.25);
+        text-align: center;
+    }
+
+    #menu a:last-child {
+        border: none;
+    }
+
+    #menu a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+    }
+
+    #menu a.active {
+        background-color: #85adad;
+        color: #ffffff;
+    }
+
+    #menu a.active:hover {
+        background: #5c8a8a;
+    }
+.overlay{
+  position: absolute;
+  top: 50px;
+  height: 200px;
+  width: 50%;
+}
+.sidebar{
+  height: 10px;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  background-color: #111；
+  padding-top: 30px;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+.sidebar a{
+  padding: 15px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 30px;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  padding:  50px, 50px,;
+  padding-right: 20px;
+  color: white;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding-top:80px;
+  left: 0;
+}
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
+.listings {
+  height: 70%;
+  overflow: auto;
+  padding-bottom: 60px;
+  padding-top: 50px;
+  background: white;
+}
+
+
+.listings .item {
+  display: block;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-decoration: none;
+  color: darkgray;
+  font-size: 15px;
+}
+.listings .item:last-child { border-bottom: none; }
+    
+.listings .item .title {
+  display: block;
+  color: #00853e;
+  font-weight: 700;
+    padding-left: 0;
+}
+
+.listings .item .title small { font-weight: 400; }
+
+
+.listings .item .title:hover { color: #8cc63f; }
+
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-left: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00853e;
+  border-radius: 0;
+}
+
+.clearfix { display: block; }
+
+.clearfix::after {
+  content: '.';
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+
+</style>
+ 
+</head>
+<body>
+  <div id="map" class="map pad2"></div>
+  <div class="navibar">
+  <a class = "navbar-header" href="./attractiontest.html">London - Experience</a>
+  <div id="main">
+    <button class="openbtn" onclick="openNav()">British Museum</button>
+    </br>
+    <button class="openbtn" onclick="openNav2()">Churchill War Rooms</button>
+    </br>
+    <button class="openbtn" onclick="openListNav()">TOP 10 IN LONDON</button>
+  </div>
+  
+</div>
+
+<div id="mySidebar" class='sidebar'>
+    <a class="closebtn" onclick="closeNav()">x</a>
+    <div class="map-overlay", id="chartContainer"></div>
+    </div>
+<div id="mySidebar2" class="sidebar">
+  <a class="closebtn" onclick="closeNav2()">x</a>
+  <div class="map-overlay2", id="chartContainer2"></div>
+    </div>
+
+<div id="ListSidebar" class="sidebar">
+  <a class="closebtn" onclick="closeListNav()">x</a>
+  <div class="listings" id="listings"></div>
+</div>
+
+
+<nav id="menu"></nav>
+<script>
+  function buildLocationList(data) {
+  // Iterate through the list of stores
+  for (i = 0; i < data.features.length; i++) {
+    var currentFeature = data.features[i];
+    var prop = currentFeature.properties;
+    // Select the listing container in the HTML and append a div
+    // with the class 'item' for each store
+    var listings = document.getElementById('listings');
+    var listing = listings.appendChild(document.createElement('div'));
+    listing.className = 'item';
+    listing.id = 'listing-' + i;
+
+    // Create a new link with the class 'title' for each store
+    // and fill it with the store address
+    var link = listing.appendChild(document.createElement('a'));
+    link.href = '#';
+    link.className = 'title';
+    link.dataPosition = i;
+    link.innerHTML = prop.name;
+    link.addEventListener('click', function(e) {
+  // Update the currentFeature to the store associated with the clicked link
+  var clickedListing = data.features[this.dataPosition];
+  // 1. Fly to the point associated with the clicked link
+  flyToAttractions(clickedListing);
+  // 2. Close all other popups and display popup for clicked store
+  createPopUp(clickedListing);
+  // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+  var activeItem = document.getElementsByClassName('active');
+  if (activeItem[0]) {
+    activeItem[0].classList.remove('active');
+  }
+  this.parentNode.classList.add('active');
+});
+
+    // Create a new div with the class 'details' for each store
+    // and fill it with the city and phone number
+    var details = listing.appendChild(document.createElement('div'));
+    details.innerHTML = prop.address;
+    if (prop.phone) {
+      details.innerHTML += ' · ' + prop.phoneFormatted;
+    }
+  }
+};
+  function openListNav(){
+        document.getElementById("ListSidebar").style.width = "250px";
+        document.getElementById("ListSidebar").style.height="500px";
+        document.getElementById("main").style.marginLeft= "250px";
+    }
+    function closeListNav(){
+        document.getElementById("ListSidebar").style.width = "0";
+        document.getElementById("main").style.marginLeft="0";
+    }
+  function openNav(){
+        document.getElementById("mySidebar").style.width = "500px";
+        document.getElementById("mySidebar").style.height="500px";
+        document.getElementById("main").style.marginLeft= "500px";
+    }
+    function closeNav(){
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("main").style.marginLeft="0";
+    }
+    function openNav2(){
+        document.getElementById("mySidebar2").style.width = "500px";
+        document.getElementById("mySidebar2").style.height="500px";
+        document.getElementById("main").style.marginLeft= "500px";
+    }
+    function closeNav2(){
+        document.getElementById("mySidebar2").style.width = "0";
+        document.getElementById("main").style.marginLeft="0";
+    }
+var chart = new CanvasJS.Chart("chartContainer", {
+  animationEnabled: true,
+  title:{
+    text: "Monthly Vistors of British Museum"
+  },
+  axisY: {
+    title: "Monthly Number of Visitors",
+    includeZero: false,
+    suffix: " "
+  },
+  legend:{
+    cursor: "pointer",
+    fontSize: 16,
+    itemclick: toggleDataSeries
+  },
+  toolTip:{
+    shared: true,
+  },
+  data: [{
+    name: "British Museum18/19",
+    type: "spline",
+    //yValueFormatString: "#0.##",
+    showInLegend: true,
+    dataPoints: [
+      { label:'April', y: 472113,},
+      { label:'May', y:  480033},
+      { label:'June',y: 507173 },
+      { label:'July', y: 645024 },
+      { label:'August', y: 628253 },
+      { label:'September', y: 464483 },
+      { label:'October', y: 523369 },
+      { label:'November', y: 433200 },
+      {label: 'December', y: 459485},
+      {label: 'January', y: 447863 },
+      {label: 'February', y: 470127},
+      {label: 'March', y: 494348}
+    ]
+  },
+  {
+    name: "British Museum17/18",
+    type: "spline",
+    //yValueFormatString: "#0.##",
+    showInLegend: true,
+    dataPoints: [
+      { label:'April', y: 549563,},
+      { label:'May', y:  541927},
+      { label:'June',y: 557991 },
+      { label:'July', y: 679308 },
+      { label:'August', y: 591149 },
+      { label:'September', y: 422497 },
+      { label:'October', y: 479492 },
+      { label:'November', y: 421888 },
+      {label: 'December', y: 363281},
+      {label: 'January', y: 397809},
+      {label: 'February', y: 385277},
+      {label: 'March', y: 432333}
+    ]
+  },
+  {
+    name: "British Museum16/17",
+    type: "spline",
+    //yValueFormatString: "#0.## °C",
+    showInLegend: true,
+    dataPoints: [
+      { label:'April', y: 530029,},
+      { label:'May', y:  568317},
+      { label:'June',y: 567555},
+      { label:'July', y: 689401 },
+      { label:'August', y: 635353 },
+      { label:'September', y: 477003 },
+      { label:'October', y: 541954},
+      { label:'November', y: 477088},
+      {label: 'December', y: 442708},
+      {label: 'January', y: 388072},
+      {label: 'February', y: 420134},
+      {label: 'March', y: 491414}
+      
+    ]
+  }]
+});
+chart.render();
+
+function toggleDataSeries(e){
+  if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+    e.dataSeries.visible = false;
+  }
+  else{
+    e.dataSeries.visible = true;
+  }
+  chart.render();
+};
+
+
+ function flyToAttractions(currentFeature){
+        map.flyTo({
+            center: currentFeature.geometry.coordinates,
+            zoom:15
+        });
+    }
+    function createPopUp(currentFeature){
+        var popUps = document.getElementsByClassName ('mapboxgl-popup');
+        if (popUps[0]) popUps[0].remove();
+        
+        var popup = new mapboxgl.Popup({ closeOnClick: false})
+        .setLngLat(currentFeature.geometry.coordinates)
+        .setHTML('<h3>' + currentFeature.properties.name + '</h3>' +
+                '<h4>' + currentFeature.properties.discription + '</h4>')
+        .addTo(map);
+    }
+
+
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibGxsanJiZWxsYSIsImEiOiJjajlzYWxibWUzN2VhMndsZ2JjeDh4MzI5In0.WDSb13rHJbGSWpNchu57EA';
+    var map = new mapboxgl.Map({
+  container: 'map',
+  // style URL
+  style: 'mapbox://styles/mapbox/light-v10',
+  // initial position in [lon, lat] format
+  center: [-0.1365215,51.5024417],
+  pitch: 60,
+  // initial zoom
+  zoom: 12,
+});
+
+var attractions = {
+  "type": "FeatureCollection",
+        "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.1291453,51.5194133]
+          },
+          "properties": {
+          "name": "British Museum",
+        "phoneFormatted": "0207-323-8299",
+        "phone": "02073238299",
+        "address": "Great Russell St, Bloomsbury, London WC1B 3DG",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "WC1B 3DG",
+        "icon": "museum",
+        "category":"attractions",
+        "discription": "A museum of the world, for the world. Discover over two million years of human history and culture. Some of the world-famous objects include the Rosetta Stone, the Parthenon sculptures and Egyptian mummies.",
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.078138,
+          51.5081124
+        ]
+      },
+      "properties": {
+        "name": "Tower of London",
+        "phoneFormatted": "0844-482-7777",
+        "phone": "08444827777",
+        "address": "St Katharine's & Wapping, London EC3N 4AB",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "EC3N 4AB",
+        "icon": "castle",
+        "category": "attractions",
+          "discription": "One of London's most famous landmarks, the historic Tower houses the Crown Jewels, the prison cell of Sir Walter Raleigh, known as the Bloody Tower, and the Chapel of St. John and the Royal Armories."
+      }
+    },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1315459,
+          51.5021585
+        ]
+      },
+      "properties": {
+        "name":"Churchill War Rooms",
+        "phoneFormatted": "020-7416-5000",
+        "phone": "02074165000",
+        "address": "Clive Steps, King Charles St, London SW1A 2AQ",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SW1A 2AQ",
+        "icon": "attraction",
+          "category": "attractions",
+          "discription": "Secret underground headquarters where Prime Minister Winston Churchill lived and worked during WWII."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.0775452,
+          51.5054564
+        ]
+      },
+      "properties": {
+        "name": "Tower Bridge",
+        "phoneFormatted": "020-7403-3761",
+        "phone": "02074033761",
+        "address": "Tower Bridge Rd, London SE1 2UP",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SE1 2UP",
+        "icon": "bridge",
+          "category": "attractions",
+          "discription": "An iconic London landmark and one of Britain's best loved historic sites, Tower Bridge is open to the public 363 days a year. Within the Bridge's iconic structure and magnificent Victorian Engine rooms, the Tower Bridge Exhibition is the best way of exploring the most famous bridge in the world!"
+      }
+    },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1297636,
+          51.4993815
+        ]
+      },
+      "properties": {
+        "name":"Westminster Abbey",
+        "phoneFormatted": "020-7222-5152",
+        "phone": "02072225152",
+        "address": "20 Deans Yd, Westminster, London SW1P 3PA",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SW1P 3PA",
+        "icon": "place-of-worship",
+          "category": "attractions",
+          "discription": "Westminster Abbey was initially built by Henry III in 1245 and it is one of the most important Gothic buildings of England. It contains a treasury full of paintings, stained glass, pavements, textiles, books and various other artefacts plus the most significant collection of monumental sculptures of the UK."
+      }
+    },
+      
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1304877,
+          51.508929
+        ]
+      },
+      "properties": {
+        "name": "National Gallery",
+        "phoneFormatted": "020-7747-2885",
+        "phone": "02077472885",
+        "address": "Trafalgar Square, Charing Cross, London WC2N 5DN",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "WC2N 5DN",
+        "icon": "art-gallery",
+          "category": "attractions",
+          "discription": "The National Gallery houses the national collection of paintings in the Western European tradition from the 13th to the 19th centuries. It is on show 361 days a year, free of charge."
+      }
+    },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1836057,
+          51.5128192
+        ]
+      },
+      "properties": {
+        "name": "Victoria and Albert Museum",
+        "phoneFormatted": "020-7942-2000",
+        "phone": "02079422000",
+        "address": "Cromwell Rd, Knightsbridge, London SW7 2RL",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SW7 2RL",
+        "icon": "museum",
+          "category": "attractions",
+          "discription": "The world's greatest museum of art and design.The V&A's collections are unrivalled in their diversity. Explore historical and contemporary art and design, including works of art from many of the world's richest cultures."
+      }
+    },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.0931517,
+          51.5054504
+        ]
+      },
+      "properties": {
+        "name": "Borough Market",
+        "phoneFormatted": "020-7747-2885",
+        "phone": "02077472885",
+        "address": "8 Southwark St, London SE1 1TL",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SE1 1TL",
+        "icon": "restaurant",
+          "category": "attractions",
+          "discription": "An amazing food market dating back to the 13th century."
+      }
+    },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1778205,
+          51.5043584
+        ]
+      },
+      "properties": {
+        "name": "Hyde Park",
+        "phoneFormatted": "0300-061-2000",
+        "phone": "03000612000",
+        "address": "The Old Police House, Hyde Park, London W2 2UH",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "W2 2UH",
+        "icon": "amusement-park",
+          "category": "attractions",
+          "discription": "Once the hunting ground for Henry VIII, this large royal park is best known for its famous Speakers' Corner, where people speak their minds, Rotton Row, a famous horse-riding area and Serpentine Lake, home to waterfowl and oarsmen."
+      }
+    },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1005393,
+          51.5138453
+        ]
+      },
+      "properties": {
+        "name": "St. Paul's Cathedral",
+        "phoneFormatted": "020-7246-8350",
+        "phone": "02072468350",
+        "address": "St. Paul's Churchyard, London EC4M 8AD",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "EC4M 8AD",
+        "icon": "place-of-worship",
+          "category": "attractions",
+          "discription": "St. Paul's has been the site of many historic state occasions. A busy working Christian community with several daily services at which all are welcome. St. Paul's also welcomes visitors with access to five levels of the Cathedral including the Whispering Gallery with its unique acoustics and the Stone and Golden Galleries atop the Dome offering breathtaking panoramic views over London."
+      }
+    },
+      ]
+    };
+    var hotels = {
+        "type": "FeatureCollection",
+  "features": [
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1457617,
+           51.498255
+        ]
+      },
+        "properties": {
+        "name": "Hotel 41",
+        "phoneFormatted": "020-7300-0041",
+        "phone": "02073000041",
+        "address": "41 Buckingham Palace Rd, Victoria, London SW1W 0PS",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SW1W 0PS",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+    },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1697935,
+           51.496817
+        ]
+      },
+        "properties": {
+        "name": "The Egerton House Hotel",
+        "phoneFormatted": "020-7589-2412",
+        "phone": "02075892412",
+        "address": "17-19 Egerton Terrace, Knightsbridge, London SW3 2BX",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SW3 2BX",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+      },
+        {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1888154,
+           51.5020072
+        ]
+      },
+        "properties": {
+        "name": "The Milestone Hotel and Residences",
+        "phoneFormatted": "020-7917-1000",
+        "phone": "02079171000",
+        "address": "1 Kensington Ct, Kensington, London W8 5DL",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "W8 5DL",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+        },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1494675,
+           51.5102397
+        ]
+      },
+        "properties": {
+        "name": "The Connaught",
+        "phoneFormatted": "020-7499-7070",
+        "phone": "02074997070",
+        "address": "Carlos Pl, Mayfair, London W1K 2AL",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "W1K 2AL",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+        },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1614059,
+           51.5151555
+        ]
+      },
+        "properties": {
+        "name": "The Montcalm London Marble Arch",
+        "phoneFormatted": "020-7958-3200",
+        "phone": "02079583200",
+        "address": "2 Wallenberg Pl, Marylebone, London W1H 7TN",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "W1H 7TN",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+        },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1278844,
+           51.520181
+        ]
+      },
+        "properties": {
+        "name": "The Montague on The Gardens",
+        "phoneFormatted": "020-7637-1001",
+        "phone": "02076371001",
+        "address": "15 Montague St, Bloomsbury, London WC1B 5BJ",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "WC1B 5BJ",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+        },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1622677,
+           51.516027
+        ]
+      },
+        "properties": {
+        "name": "The Arch London",
+        "phoneFormatted": "020-7724-4700",
+        "phone": "02077244700",
+        "address": "50 Great Cumberland Pl, Marylebone, London W1H 7FD",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "W1H 7FD",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+        },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1559425,
+           51.4973362
+        ]
+      },
+        "properties": {
+        "name": "The Hari",
+        "phoneFormatted": "020-7724-4700",
+        "phone": "02077244700",
+        "address": "50 Great Cumberland Pl, Marylebone, London W1H 7FD",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "W1H 7FD",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+        },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1395774,
+           51.4986773
+        ]
+      },
+        "properties": {
+        "name": "Taj 51 Buckingham Gate Suites and Residences",
+        "phoneFormatted": "020-7769-7766",
+        "phone": "02077697766",
+        "address": "51 Buckingham Gate, Westminster, London SW1E 6AF",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SW1E 6AF",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+        },
+      {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1478207,
+           51.4976085
+        ]
+      },
+        "properties": {
+        "name": "The Goring",
+        "phoneFormatted": "020-7396-9000",
+        "phone": "02073969000",
+        "address": "15 Beeston Pl, Westminster, London SW1W 0JW",
+        "city": "London",
+        "country": "United Kingdom",
+        "postalCode": "SW1W 0JW",
+        "icon": "lodging",
+            "category": "hotels",
+            "discription": "TripAdvisor's top ten hotel"
+      }
+      } 
+    ]
+    };
+    map.on('load', function(e) {
+  // Add the data to your map as a layer
+  map.addLayer({
+    id: 'attractions',
+    type: 'symbol',
+    // Add a GeoJSON source containing place coordinates and information.
+    source: {
+      type: 'geojson',
+      data: attractions
+    },
+    layout: {
+      'icon-image': '{icon}-15',
+      'icon-allow-overlap': true,
+    }
+  });
+  map.addLayer({
+    id: 'hotels',
+    type: 'symbol',
+    // Add a GeoJSON source containing place coordinates and information.
+    source: {
+      type: 'geojson',
+      data: hotels
+    },
+    layout: {
+      'icon-image': 'lodging-15',
+      'icon-allow-overlap': true,
+    }
+  });
+  var layers = map.getStyle().layers;
+
+        var labelLayerId;
+        for (var i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                labelLayerId = layers[i].id;
+                break;
+            }
+        }
+        map.addLayer({
+              'id': '3d-buildings',
+              'source': 'composite',
+              'source-layer': 'building',
+              'filter': ['==', 'extrude', 'true'],
+              'type': 'fill-extrusion',
+              'minzoom': 15,
+              'paint': {
+                  'fill-extrusion-color': '#aaa',
+                  'fill-extrusion-height': [
+                      "interpolate", ["linear"], ["zoom"],
+                      15, 0,
+                      15.05, ["get", "height"]
+                ],
+                  'fill-extrusion-base': [
+                      "interpolate", ["linear"], ["zoom"],15, 0,
+                      15.05, ["get", "min_height"]
+                  ],
+                  'fill-extrusion-opacity': .6
+              }
+              }, labelLayerId);
+
+  buildLocationList(attractions);
+
+  map.on('click','attractions',function(e){
+    var features = map.queryRenderedFeatures(e.point, { layers: ['attractions'] });
+  // Query all the rendered points in the view
+  
+  if (features.length) {
+    var clickedPoint = features[0];
+    // 1. Fly to the point
+    flyToAttractions(clickedPoint);
+    // 2. Close all other popups and display popup for clicked store
+    createPopUp(clickedPoint);
+    // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+    var activeItem = document.getElementsByClassName('active');
+    if (activeItem[0]) {
+      activeItem[0].classList.remove('active');
+    }
+    // Find the index of the store.features that corresponds to the clickedPoint that fired the event listener
+    var selectedFeature = clickedPoint.properties.name;
+
+    for (var i = 0; i < attractions.features.length; i++) {
+      if (attractions.features[i].properties.name === selectedFeature) {
+        selectedFeatureIndex = i;
+      }
+    }
+    // Select the correct list item using the found index and add the active class
+    var listing = document.getElementById('listing-' + selectedFeatureIndex);
+    listing.classList.add('active');
+  }
+  var coordinates = e.features[0].geometry.coordinates.slice();
+  var description = e.features[0].properties.discription;
+  var name = e.features[0].properties.name;
+  while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+  new mapboxgl.Popup()
+  .setLngLat(coordinates)
+  .setHTML('<h3>' + name + '</h3>' +
+    '<h4>'+ description +'</h4>')
+  .addTo(map);
+});
+map.on('mouseenter', 'attractions', function () {
+map.getCanvas().style.cursor = 'pointer';
+});
+map.on('mouseleave', 'attractions', function () {
+map.getCanvas().style.cursor = '';
+});
+map.on('click','hotels',function(e){
+    var features = map.queryRenderedFeatures(e.point, { layers: ['hotels'] });
+  // Query all the rendered points in the view
+  
+  if (features.length) {
+    var clickedPoint = features[0];
+    // 1. Fly to the point
+    flyToAttractions(clickedPoint);
+    // 2. Close all other popups and display popup for clicked store
+    createPopUp(clickedPoint);
+    // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+    var activeItem = document.getElementsByClassName('active');
+    if (activeItem[0]) {
+      activeItem[0].classList.remove('active');
+    }
+    // Find the index of the store.features that corresponds to the clickedPoint that fired the event listener
+    var selectedFeature = clickedPoint.properties.name;
+
+    for (var i = 0; i < attractions.features.length; i++) {
+      if (attractions.features[i].properties.name === selectedFeature) {
+        selectedFeatureIndex = i;
+      }
+    }
+    // Select the correct list item using the found index and add the active class
+    var listing = document.getElementById('listing-' + selectedFeatureIndex);
+    listing.classList.add('active');
+  }
+  var coordinates = e.features[0].geometry.coordinates.slice();
+  var description = e.features[0].properties.discription;
+  var name = e.features[0].properties.name;
+  while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+  new mapboxgl.Popup()
+  .setLngLat(coordinates)
+  .setHTML('<h3>' + name + '</h3>' +
+    '<h4>'+ description +'</h4>')
+  .addTo(map);
+});
+map.on('mouseenter', 'hotels', function () {
+map.getCanvas().style.cursor = 'pointer';
+});
+map.on('mouseleave', 'hotels', function () {
+map.getCanvas().style.cursor = '';
+});
+});
+    var toggleableLayerIds = [ 'attractions', 'hotels' ];
+    for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
+
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    };
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+}
+
+
+
+  </script>
+</body>
+  </html>
