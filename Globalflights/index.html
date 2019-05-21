@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <title>Global Flight Routes</title>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- jQuery UI CSS -->
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Bootstrap grid setup -->
+    <div style="background-color: #ffffff" class="container-fluid">
+        <div class="row">
+            <p><h1 align = 'center'>Global Flight Routes</h1></p>
+            <p align = 'center'></p>
+        </div>
+
+            <div class="col-xs-6">
+                <select id="inds">
+                    <option value="1" selected="selected">Top 10</option>
+                    <option value="2">11-20</option>
+                    <option value="3">21-30</option>
+                    <option value="4">31-40</option>
+                    <option value="5">41-50</option>
+                    <option value="6">51-60</option>
+                    <option value="7">61-70</option>
+                    <option value="8">71-80</option>
+                    <option value="9">81-90</option>
+                    <option value="10">91-100</option>
+                </select>
+                <h7>
+                    Departure flights by city
+                    <span style="float:right;">Arrival flights by region</span>
+                </h7>
+                <div id="chart-area1"></div>
+            </div>
+            <div class="col-xs-6">
+                <h6 align="center">
+            
+                </h6>
+                <div id="chart-area2"></div>
+                <p align = 'center'>Source:Openflights.org. Visualised in d3.js & viz.js</p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- External JS libraries -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/d3.min.js"></script>
+    <script src="js/viz.v1.1.1.min.js"></script>
+    <script src="js/topojson.v1.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>
