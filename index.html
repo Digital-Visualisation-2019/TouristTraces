@@ -49,19 +49,61 @@
     <!--free icons from: https://www.flaticon.com-->
     <ul id="menu">
         <li data-menuanchor="page1" class="active"><a href="#page1" title="Top"><img src="media/icon_1.png"></a></li>
-        <li data-menuanchor="page2"><a href="#page2" title="Site Map"><img src="media/icon_2.png"></a></li>
-        <li data-menuanchor="page3"><a href="#page3" title="TFL"><img src="media/icon_3.png"></a></li>
-        <li data-menuanchor="page4"><a href="#page4" title="Yelp"><img src="media/icon_4.png"></a></li>
-        <li data-menuanchor="page5"><a href="#page5" title="Footfall"><img src="media/icon_5.png"></a></li>
-        <li data-menuanchor="page6"><a href="#page6" title="Twitter"><img src="media/icon_6.png"></a></li>
-        <li onclick="on()"><img src="media/icon_7.png" title="About"></li>
+        <li data-menuanchor="page2"><a href="#page2" title="Overview"><img src="media/icon_2.png"></a></li>
+        <li data-menuanchor="page3"><a href="#page3" title="Global Flights"><img src="media/global.png"></a></li>
+        <li data-menuanchor="page4"><a href="#page4" title="London Flights"><img src="media/london_flight.png"></a></li>
+        <li data-menuanchor="page5"><a href="#page5" title="People Movement"><img src="media/people.png"></a></li>
+        <li data-menuanchor="page6"><a href="#page6" title="London Experience"><img src="media/experience.png"></a></li>
+        <li onclick="on()"><img src="media/about.png" title="About"></li>
     </ul>
     
+    
+     <div id="myPage">
+
+        <!-- Page1: INTRO-->
+        <div class="section section1">
+            <div class="prjtitle">Invisible City</div>
+            <div class="prjintro">Invisible Cities is a crucial concept to understand invisible exports of a country. More info here. </div>
+            <img src="media/arrows_down.png" alt="Scroll down" class="downarrow" title="Scroll down to explore!">
+        </div>
+         
+        
+         
+        <!-- Page2: Story Line-->
+        <div class="section section2">
+            <ul id="items">
+                <li><img src="media/icon_3w.png">
+                    <div class="subtitles">
+                        <h3>Global connectivity</h3>
+                        <p>Visualise how connected cities are using Openflight data. </p>
+                    </div>
+                </li>
+                <li><img src="media/icon_4w.png">
+                    <div class="subtitles">
+                        <h3>Flights to London</h3>
+                        <p>Visualise incoming and outgoing flights to London.</p>
+                    </div>
+                </li>
+                <li><img src="media/icon_5w.png">
+                    <div class="subtitles">
+                        <h3>International visitors</h3>
+                        <p>Visualising visitor trends to London from 2011 - 2018 </p>
+                    </div>
+                </li>
+                <li><img src="media/icon_6w.png">
+                    <div class="subtitles">
+                        <h3>Top 10 Attraction and Hotels</h3>
+                        <p>Visualising the top 10 attractions and hotels in London</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
     
     
      <div id="myPage">
       
-       <!-- Page3: London - Visitors -->
+       <!-- Page3: Global Flights -->
         <div class="section section3">
 
             <!--TITLE-->
@@ -70,8 +112,6 @@
                 <p>Data source: Openflights.org <a href="" </a></p>
              </div>
  
-
-
             <!--MAP-->
             <iframe id="Globalflights" src="Globalflights/index.html" height="100%" width="100%" frameBorder="0" scrolling="no"></iframe>
         </div>
@@ -82,8 +122,8 @@
     <!-- PAGES -->
     <div id="myPage">
       
-       <!-- Page3: London - Visitors -->
-        <div class="section section3">
+       <!-- Page4: London Flights -->
+        <div class="section section4">
 
             <!--TITLE-->
             <div class="overlay">
@@ -91,7 +131,6 @@
                 <p>Data source: <a href="" </a></p>
              </div>
  
-
 
             <!--MAP-->
             <iframe id="trips" src="trips/index.html" height="100%" width="100%" frameBorder="0" scrolling="no"></iframe>
@@ -102,8 +141,8 @@
         <!-- PAGES -->
     <div id="myPage">
       
-       <!-- Page3: London - Visitors -->
-        <div class="section section3">
+       <!-- Page5: International - Visitors -->
+        <div class="section section5">
 
             <!--TITLE-->
             <div class="overlay">
@@ -121,8 +160,8 @@
     </div>
         <div id="myPage">
       
-       <!-- Page3: London - Visitors -->
-        <div class="section section3">
+       <!-- Page6: London Attractions and Hotels -->
+        <div class="section section6">
 
             <!--TITLE-->
             <div class="overlay">
@@ -130,7 +169,6 @@
                 <p>Data source: <a href="" </a></p>
              </div>
  
-
 
             <!--MAP-->
             <iframe id="experience" src="experience/attractiontest.html" height="100%" width="100%" frameBorder="0" scrolling="no"></iframe>
