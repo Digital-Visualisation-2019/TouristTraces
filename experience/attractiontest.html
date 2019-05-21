@@ -11,6 +11,7 @@
  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
 <style>
+
   body {
   background: #404040;
   color: #f8f8f8;
@@ -19,9 +20,14 @@
   padding: 0;
   -webkit-font-smoothing: antialiased;
 }
+.marker{
+	background-image: './circle-512.png';
+	background-size: cover;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
 
-/* The page is split between map and sidebar - the sidebar gets 1/3, map
-gets 2/3 of the page. You can adjust this to your personal liking. */
 .map-overlay{
   position: absolute;
   height: 200px;
@@ -29,11 +35,14 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   top: 100px;
 }
 .map-overlay2{
-  position: absolute;
-  height: 200px;
-  width: 50%;
-  top: 100px;
+	position: fixed;
+	display: block;
+	top: 740px;
+	padding-left: 10px;
+	font-size: 10px;
+	color: black;
 }
+
 .mapboxgl-popup-content h3{
   background: #91c949;
   color: #fff;
@@ -50,9 +59,7 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   margin-bottom: -15px;
   padding-right: 10px;
 }
-.mapboxgl-popup-content h3:hover{
-  color: #d1e0e0;
-}
+
 .mapboxgl-popup-content h4{
   margin: 0;
   display: block;
@@ -79,10 +86,10 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
 }
 .navbar-header{
   position: absolute;
-  color:darkgray;
+  color:white;
   padding-left: 15px;
-  padding-top: 25px;
-  font-size: 30px;
+  padding-top: 40px;
+  font-size: 40px;
   text-decoration: none;
 
 
@@ -98,7 +105,7 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
     height: 10%;
     top: 0;
     left: 0;
-    background: #f0f5f5;  
+    background: #d1e0e0;  
     opacity: .9
      }
 .navibar: hover{
@@ -110,7 +117,7 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
         background: #fff;
         position: absolute;
         z-index: 1;
-        top: 70px;
+        top: 100px;
         right: 10px;
         border-radius: 3px;
         width: 120px;
@@ -193,15 +200,16 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   padding-right: 20px;
   color: white;
   border: none;
+  background-color: #b3cccc;
 }
 
 .openbtn:hover {
-  background-color: #444;
+  background-color: #85adad;
 }
 
 #main {
   transition: margin-left .5s;
-  padding-top:80px;
+  padding-top:100px;
   left: 0;
 }
 @media screen and (max-height: 450px) {
@@ -275,7 +283,7 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
   <div class="navibar">
   <a class = "navbar-header" href="./attractiontest.html">London - Experience</a>
   <div id="main">
-    <button class="openbtn" onclick="openNav()">British Museum</button>
+    <button class="openbtn" onclick="openNav()">Visitors</button>
     </br>
     <button class="openbtn" onclick="openListNav()">TOP 10 IN LONDON</button>
   </div>
@@ -286,14 +294,16 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
     <a class="closebtn" onclick="closeNav()">x</a>
     <div class="map-overlay", id="chartContainer"></div>
     </div>
-<div id="mySidebar2" class="sidebar">
-  <a class="closebtn" onclick="closeNav2()">x</a>
-  <div class="map-overlay2", id="chartContainer2"></div>
-    </div>
+
 
 <div id="ListSidebar" class="sidebar">
   <a class="closebtn" onclick="closeListNav()">x</a>
   <div class="listings" id="listings"></div>
+</div>
+
+<div class="map-overlay2">
+	<p>CREDITS:<br>Attraction & Hotel data: <a href="https://www.tripadvisor.co.uk/Attractions-g186338-Activities-London_England.html">TripAdvisor</a>.<br /> Visitor data: <a href="https://www.gov.uk/government/statistical-data-sets/museums-and-galleries-monthly-visits">GOV.UK</a>.
+  
 </div>
 
 
@@ -372,7 +382,7 @@ gets 2/3 of the page. You can adjust this to your personal liking. */
 var chart = new CanvasJS.Chart("chartContainer", {
   animationEnabled: true,
   title:{
-    text: "Monthly Vistors of British Museum"
+    text: "Monthly Vistors of Museums and Gallery"
   },
   axisY: {
     title: "Monthly Number of Visitors",
@@ -408,43 +418,64 @@ var chart = new CanvasJS.Chart("chartContainer", {
     ]
   },
   {
-    name: "British Museum17/18",
+    name: "Churhill War Rooms18/19",
     type: "spline",
     //yValueFormatString: "#0.##",
     showInLegend: true,
     dataPoints: [
-      { label:'April', y: 549563,},
-      { label:'May', y:  541927},
-      { label:'June',y: 557991 },
-      { label:'July', y: 679308 },
-      { label:'August', y: 591149 },
-      { label:'September', y: 422497 },
-      { label:'October', y: 479492 },
-      { label:'November', y: 421888 },
-      {label: 'December', y: 363281},
-      {label: 'January', y: 397809},
-      {label: 'February', y: 385277},
-      {label: 'March', y: 432333}
+      { label:'April', y: 43603,},
+      { label:'May', y:  49256},
+	  { label:'June',y: 50472},
+	  { label:'July', y: 63427},
+	  { label:'August', y: 62036},
+	  { label:'September', y: 51303},
+	  { label:'October', y: 52975},
+	  { label:'November', y: 43095},
+	  {label: 'December', y: 40493},
+	  {label: 'January', y: 36241},
+	  {label: 'February', y: 36058},
+	  {label: 'March', y: 52806}
     ]
   },
   {
-    name: "British Museum16/17",
+    name: "National Gallery18/19",
     type: "spline",
     //yValueFormatString: "#0.## °C",
     showInLegend: true,
     dataPoints: [
-      { label:'April', y: 530029,},
-      { label:'May', y:  568317},
-      { label:'June',y: 567555},
-      { label:'July', y: 689401 },
-      { label:'August', y: 635353 },
-      { label:'September', y: 477003 },
-      { label:'October', y: 541954},
-      { label:'November', y: 477088},
-      {label: 'December', y: 442708},
-      {label: 'January', y: 388072},
-      {label: 'February', y: 420134},
-      {label: 'March', y: 491414}
+      { label:'April', y: 552410},
+      { label:'May', y:  460506},
+      { label:'June',y: 428434},
+      { label:'July', y: 594002},
+      { label:'August', y: 540749},
+      { label:'September', y: 367576},
+      { label:'October', y: 502528},
+      { label:'November', y: 449050},
+      {label: 'December', y: 530125},
+      {label: 'January', y: 510372},
+      {label: 'February', y: 423581},
+      {label: 'March', y: 563625}
+      
+    ]
+  },
+  {
+    name: "V&A Museum18/19",
+    type: "spline",
+    //yValueFormatString: "#0.## °C",
+    showInLegend: true,
+    dataPoints: [
+      { label:'April', y: 289310},
+      { label:'May', y:  257031},
+      { label:'June',y: 356088},
+      { label:'July', y: 327458},
+      { label:'August', y: 357908},
+      { label:'September', y: 439100},
+      { label:'October', y: 335687},
+      { label:'November', y: 290890},
+      {label: 'December', y: 277887},
+      {label: 'January', y: 240602},
+      {label: 'February', y: 324501},
+      {label: 'March', y: 373562}
       
     ]
   }]
@@ -458,14 +489,14 @@ function toggleDataSeries(e){
   else{
     e.dataSeries.visible = true;
   }
-  chart.render();
+  //chart.render();
 };
 
 
  function flyToAttractions(currentFeature){
         map.flyTo({
             center: currentFeature.geometry.coordinates,
-            zoom:15
+            zoom:17
         });
     }
     function createPopUp(currentFeature){
@@ -490,8 +521,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibGxsanJiZWxsYSIsImEiOiJjajlzYWxibWUzN2VhMndsZ
   center: [-0.1365215,51.5024417],
   pitch: 60,
   // initial zoom
-  zoom: 12,
+  zoom: 13,
 });
+
 
 var attractions = {
   "type": "FeatureCollection",
@@ -503,7 +535,7 @@ var attractions = {
             "coordinates": [-0.1291453,51.5194133]
           },
           "properties": {
-          "name": "British Museum",
+          "name": "No1. British Museum",
         "phoneFormatted": "0207-323-8299",
         "phone": "02073238299",
         "address": "Great Russell St, Bloomsbury, London WC1B 3DG",
@@ -525,7 +557,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name": "Tower of London",
+        "name": "No2. Tower of London",
         "phoneFormatted": "0844-482-7777",
         "phone": "08444827777",
         "address": "St Katharine's & Wapping, London EC3N 4AB",
@@ -547,7 +579,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name":"Churchill War Rooms",
+        "name":"No3. Churchill War Rooms",
         "phoneFormatted": "020-7416-5000",
         "phone": "02074165000",
         "address": "Clive Steps, King Charles St, London SW1A 2AQ",
@@ -569,7 +601,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name": "Tower Bridge",
+        "name": "No4. Tower Bridge",
         "phoneFormatted": "020-7403-3761",
         "phone": "02074033761",
         "address": "Tower Bridge Rd, London SE1 2UP",
@@ -591,7 +623,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name":"Westminster Abbey",
+        "name":"No5. Westminster Abbey",
         "phoneFormatted": "020-7222-5152",
         "phone": "02072225152",
         "address": "20 Deans Yd, Westminster, London SW1P 3PA",
@@ -614,7 +646,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name": "National Gallery",
+        "name": "No6. National Gallery",
         "phoneFormatted": "020-7747-2885",
         "phone": "02077472885",
         "address": "Trafalgar Square, Charing Cross, London WC2N 5DN",
@@ -636,7 +668,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name": "Victoria and Albert Museum",
+        "name": "No7. Victoria and Albert Museum",
         "phoneFormatted": "020-7942-2000",
         "phone": "02079422000",
         "address": "Cromwell Rd, Knightsbridge, London SW7 2RL",
@@ -658,7 +690,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name": "Borough Market",
+        "name": "No8. Borough Market",
         "phoneFormatted": "020-7747-2885",
         "phone": "02077472885",
         "address": "8 Southwark St, London SE1 1TL",
@@ -680,7 +712,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name": "Hyde Park",
+        "name": "No9. Hyde Park",
         "phoneFormatted": "0300-061-2000",
         "phone": "03000612000",
         "address": "The Old Police House, Hyde Park, London W2 2UH",
@@ -702,7 +734,7 @@ var attractions = {
         ]
       },
       "properties": {
-        "name": "St. Paul's Cathedral",
+        "name": "N010. St. Paul's Cathedral",
         "phoneFormatted": "020-7246-8350",
         "phone": "02072468350",
         "address": "St. Paul's Churchyard, London EC4M 8AD",
@@ -942,7 +974,7 @@ var attractions = {
     ]
     };
     map.on('load', function(e) {
-  // Add the data to your map as a layer
+
   map.addLayer({
     id: 'attractions',
     type: 'symbol',
@@ -956,6 +988,7 @@ var attractions = {
       'icon-allow-overlap': true,
     }
   });
+
   map.addLayer({
     id: 'hotels',
     type: 'symbol',
@@ -969,7 +1002,6 @@ var attractions = {
       'icon-allow-overlap': true,
     }
   });
-  var layers = map.getStyle().layers;
 
         var labelLayerId;
         for (var i = 0; i < layers.length; i++) {
@@ -1001,6 +1033,7 @@ var attractions = {
               }, labelLayerId);
 
   buildLocationList(attractions);
+  buildLocationList(hotels);
 
   map.on('click','attractions',function(e){
     var features = map.queryRenderedFeatures(e.point, { layers: ['attractions'] });
