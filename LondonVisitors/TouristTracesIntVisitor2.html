@@ -74,7 +74,7 @@ EDITING STARTS HERE FOR GROUP WORK
     <title>Tourist Traces - International Visitors to London </title>  
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <meta name="description" content="Tourist Traces - International Visitors to London 2011-2018"> <!--extra metadata for accessibility on the web-->
-    <meta name="author" content="UCL CASA student"> <!--for the purpose of annonymous marking no name here-->
+    <meta name="author" content="Philippa Wood"> <!--for the purpose of annonymous marking no name here-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> <!--ajax google api is used so that jquery library can be accessed for easy API retrieval and animation event handling-->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script> 
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' /><!--used so that mapbox gl js library and stylesheets can be accessed-->
@@ -121,8 +121,23 @@ EDITING STARTS HERE FOR GROUP WORK
 <div class='map-overlay top'>
     <div class='map-overlay-inner'>
         <h1>International Visitors to London</h1>
-        <h3>Travelling by Air 2011-2018 <h3>
-        <p>Visitor Numbers and Spend </p>
+        <h2>Travelling by Air 2011-2018 <h2>
+        <h2>Visitor Numbers and Spend<h2>
+        <p><h3></p>
+            <div class='row legend'>
+            
+            <p><br /></p>
+            <div class="row legend-large"></div>
+            <div class="row legend-small"></div>
+            
+<!--
+            <div class="row legend-large-label"></div>
+            <div class="row legend-small-label"></div>
+-->
+            <div class='h3'> 0.5 - 700 thousand visits</div>
+            
+            </div>
+            <p><br /></p>
         <div class='row colors'>
         </div>
         <div class='row labels'>
@@ -134,6 +149,13 @@ EDITING STARTS HERE FOR GROUP WORK
             <div class='label'>£500 million</div>
         </div>
         <p><br /></p>
+<!--        <div id='QuarterYearTotalssince2011Air' class='row size'>-->
+<!--        </div>-->
+<!--https://docs.mapbox.com/help/tutorials/show-changes-over-time/
+http://bl.ocks.org/rgdonohue/97faf542a88fa21370ae1d534c0861d1-->
+       
+        
+        <p></p>
         <table><tr><td> 
         <input id='slider' type='range' class= 'range-slider' min='0' max='31' step='1' value='0' list='tickmarks' />
             <!--31 allows it to loop over but still got this odd end thing-->
@@ -166,13 +188,12 @@ EDITING STARTS HERE FOR GROUP WORK
         <p id="currentTemp">Current Outside Temperature (°C): </p>
         <p id="tubeWarmer"> Today the deep tube is estimated to be warmer by <span id="tubeWarmerTemp"></span> °C </p> 
 -->
+        <br /><br /> <br /><br /><br /><br /> <br /><br /><br /> <br />
         <p></p>
-        <p class="credit">CREDITS:<br>Visitor data: <a href="https://www.visitbritain.org/latest-quarterly-data-area">VisitBritain</a>.<br /> Geocoding: <a href="https://developers.google.com/maps/documentation/geocoding/intro">Google Geocoding API</a>. <br /> <br /> <br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /> </p>
+        <p class="credit">CREDITS:<br>Visitor data: <a href="https://www.visitbritain.org/latest-quarterly-data-area">VisitBritain</a>.<br /> Geocoding: <a href="https://developers.google.com/maps/documentation/geocoding/intro">Google Geocoding API</a>.  <br /><br /><br /><br /> 
         
 </div>
-</div>
-</div>
-    
+</div>  
     
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoicGlwcGF3b29kIiwiYSI6ImNqbjRmYnloYzBwajczcXJ1OW13YmJzdHQifQ.3n5ekTfgcT7HKsEu0cYqSA'; // Mapbox Public Access token here
@@ -312,7 +333,7 @@ var yearquarters = [
 
                 map.setLayoutProperty('QuarterYearTotalssince2011Air', 'visibility', 'none');
                 map.setLayoutProperty('QuarterYearTotalssince2011Air', 'visibility', 'visible');
-
+//                drawLegend('QuarterYearTotalssince2011Air');
             }
 
        
@@ -473,8 +494,43 @@ var yearquarters = [
 
  });    
                
-        
+//    function drawLegend(data) {
+//
+//              var largeDiameter = 25,
+//                  smallDiameter = 3;
+//
+//              $("row legend").css('height', largeDiameter());
+//
+//              $('row legend-large').css({
+//                  'width': largeDiameter(),
+//                  'height': largeDiameter()
+//              })
 
+//              $("legend-large-label").html(data.features[0].properties.GHG_QUANTITY.toLocaleString());
+//
+//              $("legend-large-label").css({
+//                  'left': largeDiameter + 30,
+//                  'top' : -8
+//              });
+
+//              $('legend-small').css({
+//                  'width': smallDiameter.toFixed(),
+//                  'height': smallDiameter.toFixed(),
+//                  'top': largeDiameter - smallDiameter,
+//                  'left': smallDiameter/2
+//              })
+
+//              $("legend-small-label").html((data.features[0].properties.GHG_QUANTITY/2).toLocaleString());
+//
+//              $("legend-small-label").css({
+//                  'top': smallDiameter - 8,
+//                  'left': largeDiameter + 30
+//              });
+
+//              $("<hr class='large'>").insertBefore("#legend-large-label")
+//              $("<hr class='small'>").insertBefore("#legend-small-label").css('top', largeDiameter - smallDiameter - 8);
+//       
+//}
     
 </script>
 </body>
