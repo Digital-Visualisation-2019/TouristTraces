@@ -105,7 +105,7 @@
     height: 10%;
     top: 0;
     left: 0;
-    background: #d1e0e0;  
+    background: #b3cbcb;  
     opacity: .9
      }
 .navibar: hover{
@@ -273,6 +273,10 @@
   clear: both;
   visibility: hidden;
 }
+.popupphoto{
+  width: 300px;
+  height: 200px;
+}
 
 
 </style>
@@ -284,7 +288,7 @@
   <a class = "navbar-header" href="./attractiontest.html">London - Experience</a>
   <div id="main">
     <button class="openbtn" onclick="openNav()">Visitors</button>
-    </br>
+    </br></br>
     <button class="openbtn" onclick="openListNav()">TOP 10 IN LONDON</button>
   </div>
   
@@ -321,8 +325,6 @@
     listing.className = 'item';
     listing.id = 'listing-' + i;
 
-    // Create a new link with the class 'title' for each store
-    // and fill it with the store address
     var link = listing.appendChild(document.createElement('a'));
     link.href = '#';
     link.className = 'title';
@@ -496,7 +498,7 @@ function toggleDataSeries(e){
  function flyToAttractions(currentFeature){
         map.flyTo({
             center: currentFeature.geometry.coordinates,
-            zoom:17
+            zoom:15.5
         });
     }
     function createPopUp(currentFeature){
@@ -505,7 +507,7 @@ function toggleDataSeries(e){
         
         var popup = new mapboxgl.Popup({ closeOnClick: false})
         .setLngLat(currentFeature.geometry.coordinates)
-        .setHTML('<h3>' + currentFeature.properties.name + '</h3>' +
+        .setHTML('<h3>' + '<a href='+ currentFeature.properties.hotelurl + '>' + currentFeature.properties.name + '</a>'+'</h3>' +
                 '<h4>' + currentFeature.properties.discription + '</h4>')
         .addTo(map);
     }
@@ -523,8 +525,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibGxsanJiZWxsYSIsImEiOiJjajlzYWxibWUzN2VhMndsZ
   // initial zoom
   zoom: 13,
 });
-
-
+    
 var attractions = {
   "type": "FeatureCollection",
         "features": [
@@ -532,7 +533,7 @@ var attractions = {
           "type": "Feature",
           "geometry": {
             "type": "Point",
-            "coordinates": [-0.1291453,51.5194133]
+            "coordinates": [-0.1265731,51.5193632]
           },
           "properties": {
           "name": "No1. British Museum",
@@ -574,8 +575,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1315459,
-          51.5021585
+          -0.1291871,
+          51.5022623
         ]
       },
       "properties": {
@@ -596,8 +597,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.0775452,
-          51.5054564
+          -0.0751814,
+          51.505532
         ]
       },
       "properties": {
@@ -663,8 +664,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1836057,
-          51.5128192
+          -0.1720833,
+          51.4963832
         ]
       },
       "properties": {
@@ -685,8 +686,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.0931517,
-          51.5054504
+          -0.0907004,
+          51.5054859
         ]
       },
       "properties": {
@@ -756,8 +757,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1457617,
-           51.498255
+          -0.1434778,
+           51.4983363
         ]
       },
         "properties": {
@@ -770,7 +771,8 @@ var attractions = {
         "postalCode": "SW1W 0PS",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "Voted the number 1 hotel in the UK by TripAdvisor, and with a prestigious Forbes Five Star Rating, 41 is an exquisite hidden gem overlooking the Royal Mews at Buckingham Palace and minutes from Victoria Station. A chic black and white design runs throughout, including the famous Executive Lounge where guests are invited to ‘plunder the pantry.",
+            "hotelurl":"https://www.41hotel.com/"
       }
     },
       {
@@ -778,8 +780,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1697935,
-           51.496817
+          -0.1675992,
+           51.4967844
         ]
       },
         "properties": {
@@ -792,7 +794,8 @@ var attractions = {
         "postalCode": "SW3 2BX",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "In the heart of Knightsbridge, on a quiet street overlooking private gardens, discover this enchanting boutique townhouse. Moments from Harrods and the V&A Museum, a passionate team welcomes each guest like family. With a unique character and beautiful traditional style, enjoy a delicious breakfast, Afternoon Tea by the fire or sip on one of London’s most famous martinis.",
+            "hotelurl":"https://www.egertonhousehotel.com/"
       }
       },
         {
@@ -800,8 +803,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1888154,
-           51.5020072
+          -0.1866909,
+           51.5020409
         ]
       },
         "properties": {
@@ -814,7 +817,9 @@ var attractions = {
         "postalCode": "W8 5DL",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "Located right opposite Kensington gardens, the Milestone is an intimate hotel filled to the brim with British charm and authenticity. Located in a heritage II listed mansion, the hotel’s atmosphere feels like it’s taken straight from another era, and the exceptional personalised service offered by the hotel’s 24 hour butlers is unparalleled.",
+            "hotelurl":"https://www.milestonehotel.com/"
+
       }
         },
       {
@@ -822,8 +827,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1494675,
-           51.5102397
+          -0.1499308,
+           51.5103097
         ]
       },
         "properties": {
@@ -836,7 +841,8 @@ var attractions = {
         "postalCode": "W1K 2AL",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "Stepping into The Connaught feels a little like entering another world. Elegant, yet effortless. Set apart from the bustle of London, yet immersed in its culture. Dedicated to fine art, as well as the finer things in life.",
+            "hotelurl":"https://www.the-connaught.co.uk/"
       }
         },
       {
@@ -844,8 +850,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1614059,
-           51.5151555
+          -0.1593001,
+           51.515138
         ]
       },
         "properties": {
@@ -858,7 +864,8 @@ var attractions = {
         "postalCode": "W1H 7TN",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "Behind its beautiful Georgian facade, sharp style, spacious rooms and exceptional service make for a memorable five-star stay, with a unique restaurant, intimate champagne bar and serene spa. Brilliantly central at the top of Park Lane, it's a short stroll from modish Marylebone, the boutiques of Bond Street and the green expanse of Hyde Park.",
+            "hotelurl":"https://www.montcalm.co.uk/"
       }
         },
       {
@@ -866,8 +873,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1278844,
-           51.520181
+          -0.1257059,
+           51.520107
         ]
       },
         "properties": {
@@ -880,7 +887,8 @@ var attractions = {
         "postalCode": "WC1B 5BJ",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "A Georgian townhouse full of English charm, The Montague on the Gardens excels in traditional service and warm, generous hospitality. Located in literary Bloomsbury, just steps from the British Museum, we are famous for al-fresco dining and wonderfully fun pop-ups, including an alpine themed Ski Lodge in winter and a Hawaiian Beach Bar in the summer.",
+            "hotelurl":"https://www.montaguehotel.com/"
       }
         },
       {
@@ -888,8 +896,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1622677,
-           51.516027
+          ,-0.1600514,
+           51.515979
         ]
       },
         "properties": {
@@ -902,7 +910,8 @@ var attractions = {
         "postalCode": "W1H 7FD",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "The Arch London is a townhouse hotel with a variety of hotel rooms and suites in London which are suitable for business or pleasure. Each hotel suite has an individual character combining plush fabrics with modern artwork which adorns the walls. The Arch London is in the chic residential area of Marylebone, an oasis of tranquillity for both locals and tourists. Famous for its leafy streets lined with Victorian homes, Marylebone is filled with small, independent shops while also being one of London’s most acclaimed fashion districts.",
+            "hotelurl":"https://www.thearchlondon.com/"
       }
         },
       {
@@ -910,8 +919,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1559425,
-           51.4973362
+          -0.1564551,
+           51.4972429
         ]
       },
         "properties": {
@@ -924,7 +933,9 @@ var attractions = {
         "postalCode": "W1H 7FD",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "The Hari is glamorous yet intimate, leaving guests feeling like they have found a hidden home away from home in the heart of London. Located moments from Harrods and the luxury shops of Knightsbridge, The Hari is also within walking distance of Buckingham Palace, Hyde Park, The Royal Albert Hall and London’s most famous museums.",
+            "hotelurl":"https://www.thehari.com/"
+
       }
         },
       {
@@ -932,8 +943,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1395774,
-           51.4986773
+          -0.1373699,
+           51.4986677
         ]
       },
         "properties": {
@@ -946,7 +957,8 @@ var attractions = {
         "postalCode": "SW1E 6AF",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "Five-star heritage hotel, perfectly positioned close to Buckingham Palace and Mayfair and just a stroll from London’s greatest landmarks. Taj 51 Buckingham Gate now provides its guests with some of the most spacious and  luxurious accommodation and finest personal service in London, featuring Taj’s acclaimed Golden Keys Concierge Service.",
+            "hotelurl":"https://www.taj51buckinghamgate.co.uk/"
       }
         },
       {
@@ -954,8 +966,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -0.1478207,
-           51.4976085
+          -0.1457687,
+           51.4975996
         ]
       },
         "properties": {
@@ -968,14 +980,14 @@ var attractions = {
         "postalCode": "SW1W 0JW",
         "icon": "lodging",
             "category": "hotels",
-            "discription": "TripAdvisor's top ten hotel"
+            "discription": "London's last remaining family-owned luxury hotel. Crafted over a century by one family, The Goring is the genuine article - a grand hotel with impeccable manners and a subtle streak of wit and wonder.",
+            "hotelurl":"https://www.thegoring.com/"
       }
       } 
     ]
     };
-    map.on('load', function(e) {
-
-  map.addLayer({
+    map.on('load', function() {
+      map.addLayer({
     id: 'attractions',
     type: 'symbol',
     // Add a GeoJSON source containing place coordinates and information.
@@ -988,6 +1000,305 @@ var attractions = {
       'icon-allow-overlap': true,
     }
   });
+  map.addLayer({
+    "id": "photo-point",
+    "type": "symbol",
+    "source": {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": [{
+          "type": "Feature",
+          "properties": {
+            "name":"British Museum",
+            "icon": "museum",
+            "imageurl":"british1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.126578,51.519679]
+          }
+        }, {
+          "type": "Feature",
+          "properties": {
+            "name":"British Museum",
+            "icon": "museum",
+            "imageurl":"british2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.127553,51.519191]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"British Museum",
+            "icon": "museum",
+            "imageurl":"british3.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.1273083,51.5187121]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Tower of London",
+            "icon": "castle",
+            "imageurl":"tower1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.077708,51.507787]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Tower of London",
+            "icon": "castle",
+            "imageurl":"tower2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.076264,51.507522]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Churchill War Rooms",
+            "icon": "attraction",
+            "imageurl":"churchill1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.129477,51.501752]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Tower Bridge",
+            "icon": "bridge",
+            "imageurl":"bridge1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.07773,51.504982]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Tower Bridge",
+            "icon": "bridge",
+            "imageurl":"bridge2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.0775452,51.5054564]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Westminster Abbey",
+            "icon": "place-of-worship",
+            "imageurl":"westminster1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.128252,51.500074]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Westminster Abbey",
+            "icon": "place-of-worship",
+            "imageurl":"westminster2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.127834,51.499]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Westminster Abbey",
+            "icon": "place-of-worship",
+            "imageurl":"westminster3.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.128177,51.499706]
+          }
+        }, {
+          "type": "Feature",
+          "properties": {
+            "name":"Westminster Abbey",
+            "icon": "place-of-worship",
+            "imageurl":"westminster4.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.1230438,51.5009299]
+          }
+        }, {
+          "type": "Feature",
+          "properties": {
+            "name":"National Gallery",
+            "icon": "art-gallery",
+            "imageurl":"gallery1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.126557,51.510158]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"National Gallery",
+            "icon": "art-gallery",
+            "imageurl":"gallery2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.12822,51.508799]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Victoria & Albert Museum",
+            "icon": "museum",
+            "imageurl":"VA1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.172267,51.496966]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Victoria & Albert Museum",
+            "icon": "museum",
+            "imageurl":"VA2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.17077,51.496487]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Borough Market",
+            "icon": "restaurant",
+            "imageurl":"borough1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.089124,51.505477]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Borough Market",
+            "icon": "restaurant",
+            "imageurl":"borough2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.0906089,51.5054615]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Borough Market",
+            "icon": "restaurant",
+            "imageurl":"borough3.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.090637,51.505029]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Hyde Park",
+            "icon": "amusement-park",
+            "imageurl":"hyde1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.172004,51.50531]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Hyde Park",
+            "icon": "amusement-park",
+            "imageurl":"hyde2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.161447,51.505269]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"Hyde Park",
+            "icon": "amusement-park",
+            "imageurl":"hyde3.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.160374,51.506258]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"St. Paul's Cathedral",
+            "icon": "place-of-worship",
+            "imageurl":"cathedral1.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.096774,51.51386]
+          }
+        },{
+          "type": "Feature",
+          "properties": {
+            "name":"St. Paul's Cathedral",
+            "icon": "place-of-worship",
+            "imageurl":"cathedral2.jpg"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.097761,51.513122]
+          }
+        },
+        ]
+      },
+    },
+"layout": {
+"icon-image": "{icon}-15",
+"icon-allow-overlap": true
+}
+});
+var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      })
+map.on('mouseenter','photo-point',function(e){
+      map.getCanvas().style.cursor='pointer';
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var name = e.features[0].properties.name;
+      var imagelink = e.features[0].properties.imageurl;
+      popup.setLngLat(coordinates)
+           .setHTML('<img class="popupphoto" src="photo/'+imagelink+'"'+'>' + '<h4>' + name + '</h4>')
+             .addTo(map);
+    });
+
+    map.on('mouseleave', 'photo-point',function(){
+      map.getCanvas().style.cursor='';
+      popup.remove();
+    });
+
 
   map.addLayer({
     id: 'hotels',
@@ -1126,7 +1437,7 @@ map.on('mouseleave', 'hotels', function () {
 map.getCanvas().style.cursor = '';
 });
 });
-    var toggleableLayerIds = [ 'attractions', 'hotels' ];
+    var toggleableLayerIds = [ 'attractions', 'hotels','photo-point' ];
     for (var i = 0; i < toggleableLayerIds.length; i++) {
     var id = toggleableLayerIds[i];
 
