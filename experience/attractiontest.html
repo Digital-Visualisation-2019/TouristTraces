@@ -44,20 +44,7 @@
 }
 
 .mapboxgl-popup-content h3{
-  background: #91c949;
-  color: #fff;
-  margin: 0;
-  display: block;
-  padding-top: 8px;
-  border-radius: 3px 3px 0 0;
-  padding-bottom: 8px;
-  font-weight: 700;
-  padding-left: 10px;
-  margin-top: -10px;
-  margin-left: -10px;
-  margin-right: -10px;
-  margin-bottom: -15px;
-  padding-right: 10px;
+  c
 }
 
 .mapboxgl-popup-content h4{
@@ -277,6 +264,21 @@
   width: 300px;
   height: 200px;
 }
+.boroughname{
+  position: absolute;
+  display: block;
+  top: 200px;
+  left: 3px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 20px;
+  color: white;
+  border: none;
+  background-color: #b3cccc;
+}
+
 
 
 </style>
@@ -285,7 +287,7 @@
 <body>
   <div id="map" class="map pad2"></div>
   <div class="navibar">
-  <a class = "navbar-header" href="./attractiontest.html">London - Experience</a>
+  <a class = "navbar-header" href="./attractiontest.html">Tourists Experience in London</a>
   <div id="main">
     <button class="openbtn" onclick="openNav()">Visitors</button>
     </br></br>
@@ -304,6 +306,7 @@
   <a class="closebtn" onclick="closeListNav()">x</a>
   <div class="listings" id="listings"></div>
 </div>
+<div class="boroughname" id="laname">Hover over a local authority</div>
 
 <div class="map-overlay2">
 	<p>CREDITS:<br>Attraction & Hotel data: <a href="https://www.tripadvisor.co.uk/Attractions-g186338-Activities-London_England.html">TripAdvisor</a>.<br /> Visitor data: <a href="https://www.gov.uk/government/statistical-data-sets/museums-and-galleries-monthly-visits">GOV.UK</a>.
@@ -498,7 +501,7 @@ function toggleDataSeries(e){
  function flyToAttractions(currentFeature){
         map.flyTo({
             center: currentFeature.geometry.coordinates,
-            zoom:15.5
+            zoom:16
         });
     }
     function createPopUp(currentFeature){
@@ -896,8 +899,8 @@ var attractions = {
       "geometry": {
         "type": "Point",
         "coordinates": [
-          ,-0.1600514,
-           51.515979
+          -0.1594046,
+           51.5161537
         ]
       },
         "properties": {
@@ -1342,6 +1345,56 @@ map.on('mouseenter','photo-point',function(e){
                   'fill-extrusion-opacity': .6
               }
               }, labelLayerId);
+        map.addLayer({
+        id: 'LocalAuthorities',
+        type: 'fill',
+        source: {
+          type: 'vector',
+          url: 'mapbox://llljrbella.5039e46a' 
+        },
+        'source-layer': 'London_boroughs_data-4qe9h0', 
+        'layout': {
+            'visibility': 'visible'
+        },
+        paint: {
+            'fill-color': '#c7bdbd',
+            'fill-opacity': 0
+            }
+      });
+        map.addLayer({
+        id: 'lahighlight',
+        type: 'line',
+        source: {
+          type: 'vector',
+          url: 'mapbox://llljrbella.5039e46a' 
+        },
+        'source-layer': 'London_boroughs_data-4qe9h0',
+        'layout': {
+            'visibility': 'visible'
+        },
+        paint: {
+            'line-color': '#5c8a8a',
+            'line-width': 2
+            },
+        //filter: ['==','name','empty']
+      });
+        map.on('mousemove', function(e) {
+        var la = map.queryRenderedFeatures(e.point, {
+          layers: ['LocalAuthorities']
+        });
+
+     if (la.length==1) {
+      map.setFilter('lahighlight', ['==','name',la[0].properties.name]);
+      console.log(la[0].properties.name);
+      document.getElementById('laname').innerHTML = la[0].properties.name;
+      console.log(la[0].id);
+      console.log(la);
+     } else {
+      map.setFilter('lahighlight', ['==','name','null']);
+      console.log('No features');
+      document.getElementById('laname').innerHTML = "Hover over a local authority";
+     }
+ });
 
   buildLocationList(attractions);
   buildLocationList(hotels);
