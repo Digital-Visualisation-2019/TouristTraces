@@ -13,4 +13,4 @@ npm start
 
 for the trip file.
 
-Our final output always need to change the url in index.html with the localhost for trip page.
+Then please change the url in 'trip' section in our final index.html with localhost for 'trip' page.
