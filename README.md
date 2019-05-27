@@ -1,8 +1,12 @@
 # TouristTraces
 da
 Because the node modeules can't be upload in the repositry. Thus for trip map, please use 
+
 npm install
+
 npm start
+
+
 for the trip file.
 
-Our final output always 
+Our final output always need to change the url in index.html with the localhost for trip page.
