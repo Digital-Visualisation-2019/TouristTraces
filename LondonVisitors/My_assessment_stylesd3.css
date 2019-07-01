@@ -1,0 +1,337 @@
+/* adapted from Duncan Smith Digital Visualisation Lecture Week 2 Example 9, 2019 */
+
+<style>
+    body { margin:0; padding:0; }
+     #map { position:absolute; top:0; bottom:0; width:100%; }
+
+.map-overlay {
+    font: 11px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+    position: absolute;
+    width: 450px;
+    min-width: 450px;
+    top: 0;
+    left: 5;
+    padding: 5px;
+}
+
+.map-overlay .map-overlay-inner {
+    background-color:#E9EAF6  ;/*#E9EAF6*/
+    opacity: 0.80;
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    border-radius: 3px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.map-overlay table {
+    border: none;
+    width: 100%;
+}
+.map-overlay h1 {
+    color:dimgray;
+    font-size: 24px;
+    margin: 0;
+    font-weight: 700;
+    padding: 2px 2px;
+    line-height: 30x;
+    display: block;
+    margin: 0 0 1px;
+}
+
+.map-overlay h2 {
+    color:dimgray;
+    font-size: 18px;
+    line-height: 20px;
+    display: block;
+/*    margin: 0 0 10px;*/
+    padding: 0px 0px;
+}
+.map-overlay h3 {
+    color:dimgray;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 700;
+    padding: 2px 2px;
+    line-height: 30x;
+    display: block;
+    margin: 0 0 1px;
+}
+.map-overlay h4 {
+    color:dimgray;
+    font-size: 12px;
+}
+.map-overlay label {
+    font: 20px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    display: block;
+    vertical-align: middle;
+    margin: 0 0 0 2px;
+    padding: 0;
+}
+
+.map-overlay .legend .bar {
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(to right, #FCA107, #7F3121);
+}
+
+.map-overlay input {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    min-width: 359px;
+    position: relative;
+    margin: 0px 0 0 2;
+    cursor: ew-resize;
+}
+
+.map-overlay p.credit {
+   margin: 0;
+   padding: 0;
+}
+
+.mapboxgl-popup {
+   background-color:#E9EAF6  ;/*#E9EAF6*/
+   opacity: 0.70;
+   max-width: 400px;
+   min-width: 50px;
+   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+   color: dimgrey;
+   padding: 0;
+   margin: 0,0,0,10px;
+}
+
+.mapboxgl-popup-tip-container {
+    width:0px;
+    height:0px;
+    margin:0 auto;
+    position:relative;
+  }
+
+.mapboxgl-popup-tip {
+    width:0;
+    height:0;
+    margin:0;
+    border-left:0 solid transparent;
+    border-right:0 solid transparent;
+    border-top:0 solid transparent;
+    box-shadow:none;
+}
+
+/* adapted from https://docs.mapbox.com/help/tutorials/show-changes-over-time/#create-a-legend*/
+
+.row {
+  height: 12px;
+  width: 100%;
+}
+
+.colors {
+  background: linear-gradient(to right, hsl(196, 64%, 46%), hsl(0, 68%, 35%));
+  margin-bottom: 0px;
+}
+
+ .legend-large {
+            border: 1px solid grey;
+            border-radius: 100%;
+            background: hsl(0, 68%, 35%);
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 120px;    
+            left: 66px;
+        }
+.legend-small {
+            border: 0.1px solid grey;
+            border-radius: 100%;
+            background: hsl(0, 68%, 35%);
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            left: 35px;
+            top: 140px; 
+        }
+/*
+.legend-large-label, .legend-small-label {
+            position: absolute;
+        }
+.legend hr.small, .legend hr.large {
+            width: 83px;
+            position: absolute;
+            top: -8px;
+            left: 66px;
+        }
+*/
+
+
+.label {
+  width: 15%;
+  display: inline-block;
+  text-align: center;
+}
+
+.playbuttonstyle {
+  color: whitesmoke;
+  background-color: dimgrey;
+}
+
+.pausebuttonstyle {
+  color: dimgrey;
+  background-color: whitesmoke;
+}
+
+/*http://bl.ocks.org/Matthew-Weber/5645518*/
+
+.plot{
+fill: whitesmoke;
+}
+.axis path,
+.axis line {
+  fill: none;
+	stroke: #AFBABF;
+	shape-rendering: crispEdges;
+	}
+.axis text {
+	font-family:  SourceSansPro-Bold;
+	font-size: 14px;
+	fill: #AFBABF;
+	}
+
+.x.axis path {
+  display: none;
+}
+.y.axis path{
+  display: none;
+  }
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-linejoin: round;
+  stroke-linecap:round;
+}
+	
+.hed {
+	font-family: SourceSansPro-Bold;
+/*
+	font-size: 24pt;
+	margin-bottom:5px; 
+	margin-top:0px;
+*/
+    color:dimgray;
+    font-size: 24px;
+    margin: 0;
+    font-weight: 700;
+    padding: 2px 2px;
+    line-height: 30x;
+    display: block;
+    margin: 0 0 1px;
+	}
+	
+.dek {
+	color:dimgray;
+    font-size: 18px;
+    line-height: 20px;
+    display: block;
+/*    margin: 0 0 10px;*/
+    padding: 0px 0px;
+    font-family: SourceSansPro-Light;
+	margin-bottom:0px; 
+	margin-top:0px;
+	}	
+
+
+.menuchoice {
+	font-family: SourceSansPro-Light;
+	font-size: 10pt;
+	margin-bottom:0px;
+	fill: #231F20; 
+	}
+.legend {
+	font-family: SourceSansPro-Light;
+	font-size: 10pt;
+	margin-bottom:0px;
+	fill: #231F20; 
+	}	
+.legend-off {
+	font-family: SourceSansPro-Light;
+	font-size: 10pt;
+	margin-bottom:0px;
+	fill: #231F20; 
+	}
+.legend-select {
+	font-family: SourceSansPro-Bold;
+	font-size: 10pt;
+	margin-bottom:0px;
+	fill: #231F20; 
+	}
+.tip1 {
+	font-family: SourceSansPro-Bold;
+	font-size: 14pt;
+	text-align: center; 
+	margin-bottom:-12px; 
+	margin-top:0px;
+	}
+	
+.tip2 {
+	font-family: SourceSansPro-ExtraLight;
+	font-size: 10pt;
+	text-align: center; 
+	margin-bottom:-12px; 
+	}	
+.tip3 {
+	font-family: SourceSansPro-ExtraLight;
+	font-size: 10pt;
+	text-align: center; 
+	margin-bottom:0px; 
+	}		
+
+@font-face {
+  font-family: 'SourceSansPro-ExtraLight';
+  font-style: normal;
+  font-weight: 200;
+  src: local('Source Sans Pro ExtraLight'), local('SourceSansPro-ExtraLight'), url(http://themes.googleusercontent.com/static/fonts/sourcesanspro/v5/toadOcfmlt9b38dHJxOBGC-IiwWNzQT_LXAtr-Ee9Pw.woff) format('woff');
+}
+@font-face {
+  font-family: 'SourceSansPro-Light';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Source Sans Pro Light'), local('SourceSansPro-Light'), url(http://themes.googleusercontent.com/static/fonts/sourcesanspro/v5/toadOcfmlt9b38dHJxOBGMVNtom4QlEDNJaqqqzqdSs.woff) format('woff');
+}
+@font-face {
+  font-family: 'SourceSansPro-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(http://themes.googleusercontent.com/static/fonts/sourcesanspro/v5/toadOcfmlt9b38dHJxOBGIqjGYJUyOXcBwUQbRaNH6c.woff) format('woff');
+}
+
+.tipsy { font-family:"Source Sans Pro"; font-size: 10px; position: absolute; padding: 5px; z-index: 100000; }
+  .tipsy-inner { background-color: #000; color: #FFF; max-width: 200px; padding: 0; text-align: left; padding:10px;}
+  /* Rounded corners */
+  .tipsy-inner { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+  
+  /* Uncomment for shadow */
+  /*.tipsy-inner { box-shadow: 0 0 5px #000000; -webkit-box-shadow: 0 0 5px #000000; -moz-box-shadow: 0 0 5px #000000; }*/
+  
+  .tipsy-arrow { position: absolute; width: 0; height: 0; line-height: 0; border: 5px dashed #000; }
+  
+  /* Rules to colour arrows */
+  .tipsy-arrow-n { border-bottom-color: #000; }
+  .tipsy-arrow-s { border-top-color: #000; }
+  .tipsy-arrow-e { border-left-color: #FFF; }
+  .tipsy-arrow-w { border-right-color: #000; }
+  
+	.tipsy-n .tipsy-arrow { top: 0px; left: 50%; margin-left: -5px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent; }
+    .tipsy-nw .tipsy-arrow { top: 0; left: 10px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent;}
+    .tipsy-ne .tipsy-arrow { top: 0; right: 10px; border-bottom-style: solid; border-top: none;  border-left-color: transparent; border-right-color: transparent;}
+  .tipsy-s .tipsy-arrow { bottom: 0; left: 50%; margin-left: -5px; border-top-style: solid; border-bottom: none;  border-left-color: transparent; border-right-color: transparent; }
+    .tipsy-sw .tipsy-arrow { bottom: 0; left: 10px; border-top-style: solid; border-bottom: none;  border-left-color: transparent; border-right-color: transparent; }
+    .tipsy-se .tipsy-arrow { bottom: 0; right: 10px; border-top-style: solid; border-bottom: none; border-left-color: transparent; border-right-color: transparent; }
+  .tipsy-e .tipsy-arrow { right: 0; top: 50%; margin-top: -5px; border-left-style: solid; border-right: none; border-top-color: transparent; border-bottom-color: transparent; }
+  .tipsy-w .tipsy-arrow { left: 0; top: 50%; margin-top: -5px; border-right-style: solid; border-left: none; border-top-color: transparent; border-bottom-color: transparent; }
+
+
+.gravity { width: 100%; margin: 5px 0; border-spacing: 5px; }
+  .gravity td { text-align: center; vertical-align: middle; padding: 5px 0; background-color: #d0d0d0; width: 33%; }
+  .gravity a { }
+    .gravity a:hover { color: #505050; background: none; }
+
+</style>
