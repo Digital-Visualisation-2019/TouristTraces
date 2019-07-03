@@ -2,13 +2,15 @@
 
 ADAPTED SOURCES: 
 
-Smith, D., 2019, CASA, Digital Visualisation Lecture Week 2 - Example 9
+
 
 DATA
-O'Brien, O., 2018, https://github.com/oobrien/vis/tree/master/tube/data, last accessed 6 February 2019
-OpenWeatherMap, 2019,  https://openweathermap.org/api, last API call 17 March 2019
-Transport for London (TfL), 2019, London Underground Average Monthly Temperatures since 2013, provided by London Datastore, https://data.london.gov.uk/dataset/london-underground-average-monthly-temperatures, released January 2019, last accessed 24 February 2019
+Visit Britain, 2019, International Visitors to London, provided by London Datastore, https://data.london.gov.uk/dataset/number-international-visitors-london, last accessed 06 May 2019
 
+Smith, D., 2019, CASA, Digital Visualisation Lecture Week 2 - Example 9
+
+D3 tooltip using jQuery tipsy, https://gist.github.com/cwaring/1383190/a08b43ca06d9b4522d6c1762444996942dc3e64c, last accessed 02/07/2019
+D3 multi-series line chart http://bl.ocks.org/Matthew-Weber/5645518  
 
 API and JSON retrieval with AJAX/JQUERY:
 https://idratherbewriting.com/learnapidoc/docapis_json_console.html
@@ -21,13 +23,15 @@ https://stackoverflow.com/questions/7286532/jquery-mouseenter-vs-mouseover
 MapboxGLJS Tutorials and Documentation:
 https://docs.mapbox.com/mapbox-gl-js/api/
 https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-get
-https://docs.mapbox.com/mapbox-gl-js/style-spec/#layers-line
 https://docs.mapbox.com/mapbox-gl-js/example/data-driven-lines/
 https://docs.mapbox.com/mapbox-gl-js/example/timeline-animation/
 https://docs.mapbox.com/mapbox-gl-js/example/popup-on-hover/ 
 https://docs.mapbox.com/mapbox-gl-js/example/hover-styles/
 https://docs.mapbox.com/mapbox-gl-js/example/polygon-popup-on-click/
-https://docs.mapbox.com/help/tutorials/show-changes-over-time/ 
+https://docs.mapbox.com/help/tutorials/show-changes-over-time/
+https://docs.mapbox.com/mapbox-gl-js/example/flyto/
+https://docs.mapbox.com/mapbox-gl-js/example/cluster/
+
 
 
 JQUERY ANIMATION
@@ -36,8 +40,8 @@ https://jsfiddle.net/w3cwhh1w/  //for play pause buttons
 https://www.w3schools.com/jsref/met_element_setattribute.asp 
 
 OTHER INSPIRATION/REFS
-https://github.com/london-rhythms/london-rhythms.github.io/blob/master/tfl/tubedata.js
-https://stackoverflow.com/questions/37880443/parse-to-float-with-2-decimal-places
+https://github.com/london-rhythms/london-rhythms.github.io/
+
 -->
 
 
@@ -52,15 +56,9 @@ IT IS RECOMMENDED THIS WEBPAGE IS USED WITH CHROME AS NO OTHER BROWSERS HAVE BEE
 -->
 
 
-
-
-
-
-
-
 <!--
 
-EDITING STARTS HERE FOR GROUP WORK
+GROUP WORK - INTERNATIONAL VISITORS
 
 -->
 
@@ -83,7 +81,8 @@ EDITING STARTS HERE FOR GROUP WORK
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="jquery.tipsy2.js"></script>
-   
+
+    
 <!--
     <script>
         var settings = {
@@ -101,17 +100,13 @@ EDITING STARTS HERE FOR GROUP WORK
             $("#currentTemp").append(currentTemperature);   
             // this is already returned as 2dp
         
-            var tubeWarmer = parseFloat(21.61 - currentTemperature).toFixed(2)
-            $("#tubeWarmerTemp").text(tubeWarmer);
             
             }).fail(function(response) {
 	           console.log('Error: ' + response);  // error capture
         });
         
         
-        // tubeWarmer is hard coded for average of all submerged lines in March - ideally should have a function to get monthly data checked against today's date, and then call it but no long term mean monthly dataset was fully processed for parsing 
-        
-        // parseFloat used (see https://stackoverflow.com/questions/37880443/parse-to-float-with-2-decimal-places)  otherwise you can get a 'number' with many decimal places returned as a result of a rounding error!
+        // parseFloat is needed with function (see https://stackoverflow.com/questions/37880443/parse-to-float-with-2-decimal-places)  otherwise you can get a 'number' with many decimal places returned as a result of a rounding error!
         
       </script>
 -->
@@ -184,7 +179,7 @@ http://bl.ocks.org/rgdonohue/97faf542a88fa21370ae1d534c0861d1-->
             </td>
             <td>
             <label id='yearquarter'>2011Q1</label>  
-                <!--this might need to be the exact name as in the field name messy SumVisits2011Q1 or SumSpend2011Q1  not 2011 Q1-->
+                
     </td>
     </tr></table>
         <button id="play">
@@ -196,21 +191,6 @@ http://bl.ocks.org/rgdonohue/97faf542a88fa21370ae1d534c0861d1-->
     <p><h4> <h4></p>
     
          
-            
-<!--
-        <p><br /></p>
-        <p id="currentTemp">Current Outside Temperature (°C): </p>
-        <p id="tubeWarmer"> Today the deep tube is estimated to be warmer by <span id="tubeWarmerTemp"></span> °C </p> 
--->
-         
-        
-<!--
-    <div id="container">
-    <p id="headline" class="hed">International Visitors to London</p>
-    <p class="dek">Travelling by Air 2011-2018</p>
-    <p class="dek">Visitor Numbers (000s) and Spend (million £) </p>	
-    </div>  
--->
     
     <p id="menu" class="menuchoice">Select metric: <select>
     <option value="Spend">Spend</option>
@@ -224,14 +204,16 @@ http://bl.ocks.org/rgdonohue/97faf542a88fa21370ae1d534c0861d1-->
         
 </div>
 </div>  
+    
+   
 <script>
-
+//d3 script adapted from http://bl.ocks.org/Matthew-Weber/5645518 
 //set the margins
 var margin = {top: 10, right: 70, bottom: 40, left: 40},
     width = 430 - margin.left - margin.right,
     height = 350 - margin.top - margin.bottom;
 
-//set dek and head to be as wide as SVG (as my div) - CHECK THIS
+//set dek and head to be as wide as SVG (as my div) 
 d3.select('#dek')
 	.style('width', width+'px');
 d3.select('#headline')
@@ -241,7 +223,7 @@ d3.select('#map-overlay-top')
 d3.select('#map-overlay-inner')
 	.style('width',width+'px');
 
-//write out your source text here
+//write out your source text here - replaced by credit class
 //var sourcetext= "Source: VisitBritain";
 
 // set the type of number here, n is a number with a comma, .2% will get you a percent, .2f will get you 2 decimal points
@@ -405,7 +387,7 @@ function redraw() {
       	.attr('id',function(d){ return d.name+"-line"; })
 	  	.style("stroke-width",2.5)
 	  	.on("mouseover", function (d) {                                  
-      		d3.select(this)                          //on mouseover of each line, give it a nice thick stroke
+      		d3.select(this)                          //on mouseover of each line, give it a nice thick stroke - not too thick because of close lines
         	.style("stroke-width",'4px');
         	
         	var selectthegraphs = $('.thegraph').not(this);     //select all the rest of the lines, except the one you are hovering on and drop their opacity
@@ -439,7 +421,7 @@ function redraw() {
         	d3.select(getname)
         		.attr("class", "legend");        	
     	})
-        .on("click", function(d) {
+        .on("click", function(d) {      // add in the fly-to center of each continent slight shift to the right because of side-overlay
             console.log($(d3.select(this)[0]).prop("id"));
             var flyline = $(d3.select(this)[0]).prop("id");
             
@@ -479,11 +461,9 @@ function redraw() {
                     zoom: 2.60
                     })
             });
-            //104.195397, 35.86166
-            //center: [-42.491, 29.925], // starting position [lng, lat]
-            //zoom: 1.2 // starting zoom
+            
             //https://docs.mapbox.com/mapbox-gl-js/example/flyto/
-            //repeat 6 times!
+            //repeat else if 6 times!
 
         
 
@@ -695,45 +675,14 @@ var yearquarters = [
 '2018Q2',
 '2018Q3'    
 
-// now got the quarter year and need to add SumVisits SumSpend
+// now got the quarter year and need to add "SumVisits" "SumSpend" later on
     
-//'SumVisits2011Q1',
-//'SumVisits2011Q2',
-//'SumVisits2011Q3',
-//'SumVisits2011Q4',
-//'SumVisits2012Q1',
-//'SumVisits2012Q2',
-//'SumVisits2012Q3',
-//'SumVisits2012Q4',
-//'SumVisits2013Q1',
-//'SumVisits2013Q2',
-//'SumVisits2013Q3',
-//'SumVisits2013Q4',
-//'SumVisits2014Q1',
-//'SumVisits2014Q2',
-//'SumVisits2014Q3',
-//'SumVisits2014Q4',
-//'SumVisits2015Q1',
-//'SumVisits2015Q2',
-//'SumVisits2015Q3',
-//'SumVisits2015Q4',
-//'SumVisits2016Q1',
-//'SumVisits2016Q2',
-//'SumVisits2016Q3',
-//'SumVisits2016Q4',
-//'SumVisits2017Q1',
-//'SumVisits2017Q2',
-//'SumVisits2017Q3',
-//'SumVisits2017Q4',
-//'SumVisits2018Q1',
-//'SumVisits2018Q2',
-//'SumVisits2018Q3'    
-//    
+   
 
 ];
 
     
-    var currentyear;        
+    var currentyear;      //define for use later with map popups  
     
     map.on('load', function() {
 
@@ -752,11 +701,12 @@ var yearquarters = [
                 
                 console.log(yearquarters[yearquarter]); // check grabbing the correct yearquarter
                 
-                currentyear = yearquarters[yearquarter];
+                currentyear = yearquarters[yearquarter]; // define currentyear so it can be called later for popup
                 
                 pp[2][1] = "SumVisits" + yearquarters[yearquarter]; 
                                                     // needs to access the nested array yearquarter 
                                                     // as it is an interpolated point feauture different structure to the point example 
+                                                    // as field headers have metric append this
                 
                 console.log(pp[2][1]); 
                 
@@ -774,6 +724,7 @@ var yearquarters = [
                 pp2[2][1] = "SumSpend" + yearquarters[yearquarter]; 
                                                     // needs to access the nested array yearquarter 
                                                     // as it is an interpolated point feauture different structure to the point example 
+                                                    // as field headers have metric append this
                 
                 console.log(pp2[2][1]); 
                 
@@ -787,7 +738,7 @@ var yearquarters = [
 
                 map.setLayoutProperty('QuarterYearTotalssince2011Air', 'visibility', 'none');
                 map.setLayoutProperty('QuarterYearTotalssince2011Air', 'visibility', 'visible');
-//                drawLegend('QuarterYearTotalssince2011Air');
+//                drawLegend('QuarterYearTotalssince2011Air'); // experimenting with dynamic legends for circle size
             }
 
        
@@ -832,7 +783,7 @@ var yearquarters = [
                           500,
                           "hsl(360, 78%, 41%)",
                           621,
-                          "hsl(0, 68%, 35%)"  //USA is so high need an extra intensity of red so not to affect the whole scale   NEEDS a 255 step? play with it
+                          "hsl(0, 68%, 35%)"  //USA is so high need an extra intensity of red so not to affect the whole scale 
                         
                         ]
                          
@@ -968,7 +919,7 @@ $("svg").ready (function(){
     
     
     
-    
+// experimental only for data driven circle legend    
 //    function drawLegend(data) {
 //
 //              var largeDiameter = 25,
